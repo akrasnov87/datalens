@@ -3,6 +3,15 @@
 ### Changes
 - Introducing the new versioning system
 
+## 2024-06-24
+
+- datalens-us: 0.204.1 -> 0.204.2
+- datalens-auth: 0.1.1 -> 0.1.2
+
+Fixed:
+
+- исправлен код проверки доступности списка таблиц для источника `PostgreSQL`.
+
 ## 2024-06-10
 
 - datalens-us: 0.204.0 -> 0.204.1
