@@ -271,9 +271,9 @@ docker compose -p datalens_demo -f docker-compose-demo.yml --env-file ./.env.dem
 <pre>
 docker save -o containers/datalens-control-api.tar akrasnov87/datalens-control-api:0.2091.0
 docker save -o containers/datalens-data-api.tar ghcr.io/datalens-tech/datalens-data-api:0.2091.0
-docker save -o containers/datalens-us.tar akrasnov87/datalens-us:0.204.2
-docker save -o containers/datalens-ui.tar akrasnov87/datalens-ui:0.1675.2
-docker save -o containers/datalens-auth.tar akrasnov87/datalens-auth:0.1.2
+docker save -o containers/datalens-us.tar akrasnov87/datalens-us:0.204.3
+docker save -o containers/datalens-ui.tar akrasnov87/datalens-ui:0.1675.3
+docker save -o containers/datalens-auth.tar akrasnov87/datalens-auth:0.1.3
 </pre>
 
 #### What are the minimum system requirements?
