@@ -11,7 +11,7 @@ services:
 
   control-api:
     container_name: datalens-control-api-${APP_ENV}
-    image: akrasnov87/datalens-control-api:0.2102.2a
+    image: akrasnov87/datalens-control-api:0.2102.2
     environment:
       BI_API_UWSGI_WORKERS_COUNT: 4
       CONNECTOR_AVAILABILITY_VISIBLE: "clickhouse,postgres,chyt,ydb"
@@ -76,7 +76,7 @@ services:
 
   us:
     container_name: datalens-us-${APP_ENV}
-    image: akrasnov87/datalens-us:0.209.1a
+    image: akrasnov87/datalens-us:0.214.0
     depends_on:
       - pg-us
     environment:
@@ -85,7 +85,8 @@ services:
       MASTER_TOKEN: "fake-us-master-token"
       POSTGRES_DSN_LIST: ${METADATA_POSTGRES_DSN_LIST:-postgres://us:us@pg-us:5432/us-db-ci_purgeable}
       SKIP_INSTALL_DB_EXTENSIONS: ${METADATA_SKIP_INSTALL_DB_EXTENSIONS:-0}
-      USE_DEMO_DATA: ${USE_DEMO_DATA:-1}./docker_build/run-project-bake dl_control_api --set "dl_control_api.tags=datalens-control-api:local"
+      USE_DEMO_DATA: ${USE_DEMO_DATA:-1}
+      USE_AUTH_DATA: ${USE_AUTH_DATA:-1}
       PROJECT_ID: ${PROJECT_ID:-datalens-demo}
       HC: ${HC:-0}
       NODE_EXTRA_CA_CERTS: /certs/root.crt
@@ -97,7 +98,7 @@ services:
 
   us-auth:
     container_name: datalens-auth-${APP_ENV}
-    image: akrasnov87/datalens-auth:0.1.4
+    image: akrasnov87/datalens-auth:0.1.5
     depends_on:
       - pg-demo-connection
     environment:
@@ -106,13 +107,14 @@ services:
       CONNECT_STR: ${METADATA_POSTGRES_DSN_LIST:-postgres://us:us@pg-us:5432/us-db-ci_purgeable}
       PROJECT_ID: ${PROJECT_ID:-datalens-demo}
       NODE_THREAD: 2
-      VERSION_CONTAINER: 0.1.2
+      VERSION_CONTAINER: 0.1.5
+      AUTH_KEY_MODE: ${AUTH_KEY_MODE:-false}
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
   datalens:
     container_name: datalens-ui-${APP_ENV}
-    image: akrasnov87/datalens-ui:0.1765.1a
+    image: akrasnov87/datalens-ui:0.1794.0
     ports:
       - ${UI_PORT:-8080}:8080
     depends_on:
