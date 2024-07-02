@@ -90,8 +90,8 @@ services:
       POSTGRES_DSN_LIST: ${METADATA_POSTGRES_DSN_LIST:-postgres://us:us@pg-us:5432/us-db-ci_purgeable}
       SKIP_INSTALL_DB_EXTENSIONS: ${METADATA_SKIP_INSTALL_DB_EXTENSIONS:-0}
       USE_DEMO_DATA: ${USE_DEMO_DATA:-1}
-      PROJECT_ID: ${PROJECT_ID:-datalens-demo}
       USE_AUTH_DATA: ${USE_AUTH_DATA:-1}
+      PROJECT_ID: ${PROJECT_ID:-datalens-demo}
       HC: ${HC:-0}
       NODE_EXTRA_CA_CERTS: /certs/root.crt
       NODE_RPC_URL: ${NODE_RPC_URL:-http://us-auth/${AUTH_ENV:-demo}/rpc}

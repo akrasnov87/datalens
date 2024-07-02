@@ -1,3 +1,4 @@
+import datetime
 import functools
 import logging
 import os
@@ -56,17 +57,39 @@ def get_latest_repo_release(repo_full_name: str, headers: dict[str, str]) -> str
 
 def request_with_retries(
     req_func: Callable[[], requests.Response],
-    max_retries: int = 15,
+    max_retries: int = 20,
     retry_delay: int = 10,
 ) -> requests.Response:
+
+    def _get_retry_delay(response: requests.Response) -> Optional[int]:
+        if response.status_code == 403 and "X-RateLimit-Remaining" not in resp.headers or response.status_code >= 500:
+            return retry_delay
+
+        if response.status_code in (403, 429):
+            if int(resp.headers.get("X-RateLimit-Remaining", -1)) > 0:
+                return retry_delay
+
+            ratelimit_reset = int(resp.headers.get("X-RateLimit-Reset", -1))
+            if ratelimit_reset > 0:
+                current_timestamp = int(datetime.datetime.now().timestamp())
+                return ratelimit_reset - current_timestamp + 1
+
+        return None
+
     retries = 0
     while retries < max_retries:
         resp = req_func()
-
-        if resp.status_code in (403, 429) and int(resp.headers.get("X-RateLimit-Remaining", -1)) == 0 or resp.status_code >= 500:
-            LOGGER.info(f"Got status {resp.status_code} on try {retries + 1}, going to retry in {retry_delay}s...")
-            retries += 1
-            time.sleep(retry_delay)
+        if resp.status_code != 200:
+            delay = _get_retry_delay(resp)
+            if delay is not None:
+                LOGGER.info(f"Got status {resp.status_code} on try {retries + 1}, going to retry in {delay}s...")
+                retries += 1
+                if retries >= max_retries:
+                    resp.raise_for_status()
+                    raise RuntimeError(f"Reached maximum number of retries, last response: {resp}")
+                time.sleep(delay)
+            else:
+                resp.raise_for_status()
         else:
             return resp
 
@@ -89,8 +112,9 @@ def get_commits_between_tags(tag_from: str, tag_to: str, repo_path: Path) -> lis
 
     return commits
 
+
 def get_pull_requests_by_commit(repo_full_name: str, commit: CommitInfo, auth_headers: dict, include_label: Optional[str] = None) -> list[PullRequestInfo]:
-    search_str = f"repo:{repo_full_name}+type:pr+is:merged+{commit.sha}"
+    search_str = f"repo:{repo_full_name}+type:pr+is:merged+{commit.sha[:10]}"
     if include_label is not None:
         search_str += f"+label:{include_label}"
     params_str = urllib.parse.urlencode(dict(q=search_str), safe=':+')
@@ -112,6 +136,8 @@ def get_pull_requests_by_commit(repo_full_name: str, commit: CommitInfo, auth_he
             labels=[label["name"] for label in pr_raw.get("labels", [])],
         )for pr_raw in prs_info_raw.json()['items']
     ]
+    if len(prs_info) > 1:
+        LOGGER.warning(f"Got >1 ({len(prs_info)}) PRs for search str {search_str}")
     return prs_info
 
 

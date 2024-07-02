@@ -11,8 +11,7 @@ services:
 
   control-api:
     container_name: datalens-control-api
-    #image: ghcr.io/datalens-tech/datalens-control-api:0.2091.0
-    image: akrasnov87/datalens-control-api:0.2091.0
+    image: ghcr.io/datalens-tech/datalens-control-api:0.2102.2
     environment:
       BI_API_UWSGI_WORKERS_COUNT: 4
       CONNECTOR_AVAILABILITY_VISIBLE: "clickhouse,postgres,chyt,ydb,mysql,greenplum"
@@ -23,16 +22,12 @@ services:
       #US_HOST: "http://us"
       US_HOST: "http://host.docker.internal:8030"
       US_MASTER_TOKEN: "fake-us-master-token"
-    ports:
-      - 8031:8080
     depends_on:
       - us
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
 
   data-api:
     container_name: datalens-data-api
-    image: ghcr.io/datalens-tech/datalens-data-api:0.2091.0
+    image: ghcr.io/datalens-tech/datalens-data-api:0.2102.2
     environment:
       GUNICORN_WORKERS_COUNT: 5
       RQE_FORCE_OFF: 1
@@ -46,13 +41,9 @@ services:
       #US_HOST: "http://us"
       US_HOST: "http://host.docker.internal:8030"
       US_MASTER_TOKEN: "fake-us-master-token"
-    ports:
-      - 8032:8080
     depends_on:
       - us
       - pg-compeng
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
 
   pg-demo-connection:
     container_name: datalens-pg-demo-connection
@@ -79,8 +70,7 @@ services:
 
   us:
     container_name: datalens-us
-    image: akrasnov87/datalens-us:0.204.0
-    #image: ghcr.io/datalens-tech/datalens-us:0.204.0
+    image: ghcr.io/datalens-tech/datalens-us:0.214.0
     depends_on:
       - pg-us 
     ports:
@@ -94,8 +84,6 @@ services:
       USE_DEMO_DATA: ${USE_DEMO_DATA:-1}
       HC: ${HC:-0}
       NODE_EXTRA_CA_CERTS: /certs/root.crt
-      NODE_RPC_URL: ${NODE_RPC_URL:-http://auth/${AUTH_ENV}/rpc}
-
     extra_hosts:
       - "host.docker.internal:host-gateway"
     volumes:
@@ -117,8 +105,7 @@ services:
 
   datalens:
     container_name: datalens-ui
-    image: akrasnov87/datalens-ui:0.1675.0
-    #image: ghcr.io/datalens-tech/datalens-ui:0.1675.0
+    image: ghcr.io/datalens-tech/datalens-ui:0.1794.0
     ports:
       - ${UI_PORT:-8080}:8080
     depends_on:
