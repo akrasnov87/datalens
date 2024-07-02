@@ -3,17 +3,32 @@
 ### Changes
 - Introducing the new versioning system
 
+## 2024-07-02
+
+- datalens-control-api: 0.2091.0 -> 0.2102.2
+- datalens-ui: 0.1675.3 -> 0.1794.0
+- datalens-us: 0.204.3 -> 0.214.0
+- datalens-auth: 0.1.3 -> 0.1.5
+
+Created:
+
+- добавлено подключение к OIDC-провайдеру.
+
+Fixed:
+
+- доработана модель назначения прав на объекты `datalens`.
+
 ## 2024-06-24
 
 Создана альфа сборка:
 
-- datalens-us: 0.1675.2 -> 0.1675.3
+- datalens-ui: 0.1675.2 -> 0.1675.3
 - datalens-us: 0.204.2 -> 0.204.3
 - datalens-auth: 0.1.2 -> 0.1.3
 
 ## 2024-06-24
 
-- datalens-us: 0.1675.1 -> 0.1675.2
+- datalens-ui: 0.1675.1 -> 0.1675.2
 - datalens-us: 0.204.1 -> 0.204.2
 - datalens-auth: 0.1.1 -> 0.1.2
 

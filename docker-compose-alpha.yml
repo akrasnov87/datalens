@@ -107,7 +107,6 @@ services:
       PROJECT_ID: ${PROJECT_ID:-datalens-demo}
       NODE_THREAD: 2
       VERSION_CONTAINER: 0.1.2
-      SOURCE_TYPES: ${SOURCE_TYPES:-.PG_TABLE.}
     extra_hosts:
       - "host.docker.internal:host-gateway"
 

@@ -51,6 +51,8 @@ __Внимание__: предварительно лучше удалить к�
 
 При работе с решением `datalens`, где включена авторизация в базе данных создаётся новая схема `core`. В ней присутствуют таблицы и функции, которые обеспечивают механизм авторизации.
 
+__Примечание__: если требуется отключить создание данных для авторизации, то требуется передать параметр USE_AUTH_DATA=-1
+
 #### Описание основных таблицы:
 
 __pd_users - Пользователи__
@@ -239,6 +241,37 @@ NODE_RPC_URL="http://localhost:7000/demo/rpc"
 * AUTH_ENV: string - пространство имён для компонета авторизации [datalens-auth](https://github.com/akrasnov87/datalens-auth). По умолчанию `demo`
 * UI_PORT: integer - порт, на котором поднимится Datalens. По умолчанию 8080
 
+Для указание настроек OIDC авторизации, требуется передать:
+
+* OIDC: boolean - признак подключения OIDC-провайдера авторизации
+* OIDC_ISSUER: string - адрес страницы для получения параметров OIDC авторизации
+* OIDC_BASE_URL: string - обработчик авторизации (локальный, например ~/auth/v1/oidc)
+* OIDC_CLIENT_ID: string - идентификатор клиента
+* OIDC_SECRET: string - секретный ключ
+* OIDC_NAME: string - наименование провайдера на клиенте
+
+Пример:
+
+<pre>
+OIDC=true
+OIDC_ISSUER=https://accounts.google.com/.well-known/openid-configuration
+OIDC_BASE_URL=https://1b39-94-232-56-134.ngrok-free.app/auth/v1/oidc
+OIDC_CLIENT_ID=528815932068-dibsaju2o48pri31.apps.googleusercontent.com
+OIDC_SECRET=GOCSPX-xQMuLZue5aWGw4JwFVl
+OIDC_NAME="GOOGLE"
+</pre>
+
+Компонет `datalens-ui` может принимать несколько OIDC провадеров (до 4). Чтобы передать их просто требуется указывать номер, например
+
+<pre>
+OIDC_2=true
+OIDC_ISSUER_2=https://accounts.google.com/.well-known/openid-configuration
+OIDC_BASE_URL_2=https://1b39-94-232-56-134.ngrok-free.app/auth/v1/oidc
+OIDC_CLIENT_ID_2=528815932068-dibsaju2o48pri31.apps.googleusercontent.com
+OIDC_SECRET_2=GOCSPX-xQMuLZue5aWGw4JwFVl
+OIDC_NAME_2="GOOGLE"
+</pre>
+
 #### Почему при запуске через авторизацию система не работает
 
 Лучше вначале запусить создание БД с выключенным параметром `NODE_RPC_URL` для контейнера `datalens-us`, а уже затем только включить этот аргумент. В таком случаи не должно быть ошибок связанных с "версией дадасета" (код ошибок 500).
@@ -271,11 +304,11 @@ docker compose -p datalens_demo -f docker-compose-demo.yml --env-file ./.env.dem
 
 ## Локальное сохранение
 <pre>
-docker save -o containers/datalens-control-api.tar akrasnov87/datalens-control-api:0.2091.0
-docker save -o containers/datalens-data-api.tar ghcr.io/datalens-tech/datalens-data-api:0.2091.0
-docker save -o containers/datalens-us.tar akrasnov87/datalens-us:0.204.3
-docker save -o containers/datalens-ui.tar akrasnov87/datalens-ui:0.1675.3
-docker save -o containers/datalens-auth.tar akrasnov87/datalens-auth:0.1.3
+docker save -o containers/datalens-control-api.tar akrasnov87/datalens-control-api:0.2102.2
+docker save -o containers/datalens-data-api.tar ghcr.io/datalens-tech/datalens-data-api:0.2102.2
+docker save -o containers/datalens-us.tar akrasnov87/datalens-us:0.214.0
+docker save -o containers/datalens-ui.tar akrasnov87/datalens-ui:0.1794.0
+docker save -o containers/datalens-auth.tar akrasnov87/datalens-auth:0.1.5
 </pre>
 
 #### What are the minimum system requirements?
