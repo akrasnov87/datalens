@@ -63,6 +63,8 @@ services:
   pg-us:
     container_name: datalens-pg-us-${APP_ENV}
     image: postgres:13-alpine
+    ports:
+      - 5432:5432
     environment:
       POSTGRES_DB: us-db-ci_purgeable
       POSTGRES_USER: us
@@ -89,7 +91,7 @@ services:
       PROJECT_ID: ${PROJECT_ID:-datalens-demo}
       HC: ${HC:-0}
       NODE_EXTRA_CA_CERTS: /certs/root.crt
-      NODE_RPC_URL: ${NODE_RPC_URL:-http://us-auth/$AUTH_ENV/rpc}
+      NODE_RPC_URL: ${NODE_RPC_URL:-http://us-auth/${AUTH_ENV:-demo}/rpc}
     extra_hosts:
       - "host.docker.internal:host-gateway"
     volumes:
