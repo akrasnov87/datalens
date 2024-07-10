@@ -86,6 +86,7 @@ services:
     environment:
       APP_INSTALLATION: "opensource"
       APP_ENV: "prod"
+      AUTH_ENV: ${AUTH_ENV:-demo}
       MASTER_TOKEN: "fake-us-master-token"
       POSTGRES_DSN_LIST: ${METADATA_POSTGRES_DSN_LIST:-postgres://us:us@pg-us:5432/us-db-ci_purgeable}
       SKIP_INSTALL_DB_EXTENSIONS: ${METADATA_SKIP_INSTALL_DB_EXTENSIONS:-0}
@@ -94,7 +95,7 @@ services:
       PROJECT_ID: ${PROJECT_ID:-datalens-demo}
       HC: ${HC:-0}
       NODE_EXTRA_CA_CERTS: /certs/root.crt
-      NODE_RPC_URL: ${NODE_RPC_URL:-http://us-auth/${AUTH_ENV:-demo}/rpc}
+      NODE_RPC_URL: ${NODE_RPC_URL:-http://us-auth/$AUTH_ENV/rpc}
     extra_hosts:
       - "host.docker.internal:host-gateway"
     volumes:
