@@ -76,7 +76,7 @@ services:
 
   us:
     container_name: datalens-us-${APP_ENV}
-    image: akrasnov87/datalens-us:0.214.1
+    image: akrasnov87/datalens-us:0.214.2
     depends_on:
       - pg-us
     environment:
