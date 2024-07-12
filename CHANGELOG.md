@@ -1,3 +1,13 @@
+## v1.6.0.1 (2024-07-12)
+
+### Image versions
+- datalens-ui: 0.1794.0 -> 0.1794.2 ([full changelog](https://github.com/akrasnov87/datalens-ui/blob/jquery/CHANGELOG.md))
+- datalens-auth: 1.1.6 -> 1.1.7 ([full changelog](https://github.com/akrasnov87/datalens-auth/blob/jquery/CHANGELOG.md))
+
+### New features
+
+- добавлен интерфейс администрирования пользователей, ролей, проектов.
+
 ## v1.6.0 (2024-06-28)
 
 ### Image versions

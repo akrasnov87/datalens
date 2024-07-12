@@ -99,7 +99,7 @@ services:
 
   us-auth:
     container_name: datalens-auth-${APP_ENV}
-    image: akrasnov87/datalens-auth:0.1.6
+    image: akrasnov87/datalens-auth:0.1.7
     depends_on:
       - pg-demo-connection
     environment:
@@ -108,14 +108,14 @@ services:
       CONNECT_STR: ${METADATA_POSTGRES_DSN_LIST:-postgres://us:us@pg-us:5432/us-db-ci_purgeable}
       PROJECT_ID: ${PROJECT_ID:-datalens-demo}
       NODE_THREAD: 2
-      VERSION_CONTAINER: 0.1.6
+      VERSION_CONTAINER: 0.1.7
       AUTH_KEY_MODE: ${AUTH_KEY_MODE:-false}
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
   datalens:
     container_name: datalens-ui-${APP_ENV}
-    image: akrasnov87/datalens-ui:0.1794.1
+    image: akrasnov87/datalens-ui:0.1794.2
     ports:
       - ${UI_PORT:-8080}:8080
     depends_on:
