@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   pg-compeng:
-    container_name: datalens-pg-compeng-${APP_ENV}
+    container_name: datalens-pg-compeng
     image: postgres:13-alpine
     environment:
       POSTGRES_PASSWORD: "postgres"
@@ -10,24 +10,26 @@ services:
       POSTGRES_USER: postgres
 
   control-api:
-    container_name: datalens-control-api-${APP_ENV}
+    container_name: datalens-control-api
     image: akrasnov87/datalens-control-api:0.2102.2
     environment:
       BI_API_UWSGI_WORKERS_COUNT: 4
-      CONNECTOR_AVAILABILITY_VISIBLE: "clickhouse,postgres,chyt,ydb"
+      CONNECTOR_AVAILABILITY_VISIBLE: "clickhouse,postgres,chyt,ydb,mysql,greenplum"
       RQE_FORCE_OFF: 1
       DL_CRY_ACTUAL_KEY_ID: key_1
       DL_CRY_KEY_VAL_ID_key_1: "h1ZpilcYLYRdWp7Nk8X1M1kBPiUi8rdjz9oBfHyUKIk="
       RQE_SECRET_KEY: ""
-      US_HOST: "http://us"
+      US_HOST: "http://host.docker.internal:8083"
       US_MASTER_TOKEN: "fake-us-master-token"
+    ports:
+      - 8081:8080
     depends_on:
       - us
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
   data-api:
-    container_name: datalens-data-api-${APP_ENV}
+    container_name: datalens-data-api
     image: ghcr.io/datalens-tech/datalens-data-api:0.2102.2
     environment:
       GUNICORN_WORKERS_COUNT: 5
@@ -39,8 +41,11 @@ services:
       DL_CRY_KEY_VAL_ID_key_1: "h1ZpilcYLYRdWp7Nk8X1M1kBPiUi8rdjz9oBfHyUKIk="
       BI_COMPENG_PG_ON: 1
       BI_COMPENG_PG_URL: "postgresql://postgres:postgres@pg-compeng:5432/postgres"
-      US_HOST: "http://us"
+      US_HOST: "http://host.docker.internal:8083"
       US_MASTER_TOKEN: "fake-us-master-token"
+      COMMON_TIMEOUT_SEC: 120
+    ports:
+      - 8082:8080
     depends_on:
       - us
       - pg-compeng
@@ -48,7 +53,7 @@ services:
       - "host.docker.internal:host-gateway"
 
   pg-demo-connection:
-    container_name: datalens-pg-demo-connection-${APP_ENV}
+    container_name: datalens-pg-demo-connection
     image: postgres:13-alpine
     environment:
       POSTGRES_DB: demo
@@ -57,11 +62,9 @@ services:
     volumes:
       - ./pg-demo-connection/init:/docker-entrypoint-initdb.d
       - ./pg-demo-connection/data:/var/lib/postgresql/data
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
 
   pg-us:
-    container_name: datalens-pg-us-${APP_ENV}
+    container_name: datalens-pg-us
     image: postgres:13-alpine
     ports:
       - 5432:5432
@@ -75,14 +78,13 @@ services:
       - "host.docker.internal:host-gateway"
 
   us:
-    container_name: datalens-us-${APP_ENV}
-    image: akrasnov87/datalens-us:0.214.2
+    container_name: datalens-us
+    image: akrasnov87/datalens-us:0.224.0
     depends_on:
       - pg-us
     environment:
       APP_INSTALLATION: "opensource"
       APP_ENV: "prod"
-      AUTH_ENV: ${AUTH_ENV:-demo}
       MASTER_TOKEN: "fake-us-master-token"
       POSTGRES_DSN_LIST: ${METADATA_POSTGRES_DSN_LIST:-postgres://us:us@pg-us:5432/us-db-ci_purgeable}
       SKIP_INSTALL_DB_EXTENSIONS: ${METADATA_SKIP_INSTALL_DB_EXTENSIONS:-0}
@@ -92,6 +94,8 @@ services:
       HC: ${HC:-0}
       NODE_EXTRA_CA_CERTS: /certs/root.crt
       NODE_RPC_URL: ${NODE_RPC_URL:-http://us-auth/${AUTH_ENV:-demo}/rpc}
+    ports:
+      - "8083:80"
     extra_hosts:
       - "host.docker.internal:host-gateway"
     volumes:
@@ -100,8 +104,8 @@ services:
   us-auth:
     container_name: datalens-auth-${APP_ENV}
     image: akrasnov87/datalens-auth:0.1.7
-    depends_on:
-      - pg-demo-connection
+    ports:
+      - "5001:80"
     environment:
       APP_ENV: ${AUTH_ENV:-demo}
       NODE_VPATH: /${AUTH_ENV:-demo}/
@@ -114,8 +118,8 @@ services:
       - "host.docker.internal:host-gateway"
 
   datalens:
-    container_name: datalens-ui-${APP_ENV}
-    image: akrasnov87/datalens-ui:0.1794.3
+    container_name: datalens-ui
+    image: akrasnov87/datalens-ui:0.1863.0
     ports:
       - ${UI_PORT:-8080}:8080
     depends_on:
@@ -129,12 +133,12 @@ services:
       APP_ENV: "production"
       APP_INSTALLATION: "opensource"
       AUTH_POLICY: "disabled"
-      US_ENDPOINT: "http://us"
-      BI_API_ENDPOINT: "http://control-api:8080"
-      BI_DATA_ENDPOINT: "http://data-api:8080"
-      FLAT_TABLE_ROWS_LIMIT: 1000000
-      FETCHING_TIMEOUT_SEC: 600
+      US_ENDPOINT: "http://host.docker.internal:8083"
+      BI_API_ENDPOINT: "http://host.docker.internal:8081"
+      BI_DATA_ENDPOINT: "http://host.docker.internal:8082"
       NODE_EXTRA_CA_CERTS: "/usr/local/share/ca-certificates/cert.pem"
+      FLAT_TABLE_ROWS_LIMIT: 100000
+      FETCHING_TIMEOUT_SEC: 120
       HC: ${HC:-0}
       OIDC: ${OIDC:-false}
       OIDC_ISSUER: ${OIDC_ISSUER}

@@ -29,9 +29,7 @@ services:
       AUTH_CLIENT_SECRET: "${BI_SERVICE_CLIENT_SECRET}"
       AUTH_APP_CLIENT_ID: "${DL_CLIENT_ID}"
       AUTH_APP_CLIENT_SECRET: "${DL_CLIENT_SECRET}"
-    ports:
-      - 8081:8080
-  
+
     depends_on:
       - us
 
@@ -58,9 +56,7 @@ services:
       AUTH_CLIENT_SECRET: "${BI_SERVICE_CLIENT_SECRET}"
       AUTH_APP_CLIENT_ID: "${DL_CLIENT_ID}"
       AUTH_APP_CLIENT_SECRET: "${DL_CLIENT_SECRET}"
-    ports:
-      - 8082:8080
-  
+
     depends_on:
       - us
       - pg-compeng
@@ -85,14 +81,12 @@ services:
       POSTGRES_PASSWORD: us
     volumes:
       - ./metadata:/var/lib/postgresql/data
- 
-    ports:
-      - "8086:5432"
+
 
 
   us:
     container_name: datalens-us
-    image: ghcr.io/datalens-tech/datalens-us:0.209.0
+    image: ghcr.io/datalens-tech/datalens-us:0.224.0
     depends_on:
       - pg-us
     environment:
@@ -111,8 +105,6 @@ services:
       CLIENT_SECRET: "${DL_CLIENT_SECRET}"
       SERVICE_CLIENT_ID: "us"
       SERVICE_CLIENT_SECRET: "${US_SERVICE_CLIENT_SECRET}"
-    ports:
-      - "8083:8083"
 
     extra_hosts:
       - "host.docker.internal:host-gateway"
@@ -174,7 +166,7 @@ services:
 
   datalens:
     container_name: datalens-ui
-    image: ghcr.io/datalens-tech/datalens-ui:0.1741.0
+    image: ghcr.io/datalens-tech/datalens-ui:0.1863.0
     ports:
       - ${UI_PORT:-8080}:8080
     depends_on:
