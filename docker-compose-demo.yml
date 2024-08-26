@@ -79,7 +79,7 @@ services:
 
   us:
     container_name: datalens-us-${APP_ENV}
-    image: akrasnov87/datalens-us:0.214.2
+    image: akrasnov87/datalens-us:0.224.2
     depends_on:
       - pg-us
     environment:
@@ -101,7 +101,7 @@ services:
 
   us-auth:
     container_name: datalens-auth-${APP_ENV}
-    image: akrasnov87/datalens-auth:0.1.7
+    image: akrasnov87/datalens-auth:0.1.9
     depends_on:
       - pg-demo-connection
     environment:
@@ -117,7 +117,7 @@ services:
 
   datalens:
     container_name: datalens-ui-${APP_ENV}
-    image: akrasnov87/datalens-ui:0.1794.3
+    image: akrasnov87/datalens-ui:0.1906.2
     ports:
       - ${UI_PORT:-8080}:8080
     depends_on:
@@ -137,6 +137,7 @@ services:
       NODE_EXTRA_CA_CERTS: "/usr/local/share/ca-certificates/cert.pem"
       FLAT_TABLE_ROWS_LIMIT: 100000
       FETCHING_TIMEOUT_SEC: 120
+      UNITED_STORAGE_CONFIG_LOADED_TIMEOUT: 10000
       HC: ${HC:-0}
       OIDC: ${OIDC:-false}
       OIDC_ISSUER: ${OIDC_ISSUER}
