@@ -11,7 +11,7 @@ services:
 
   control-api:
     container_name: datalens-control-api
-    image: akrasnov87/datalens-control-api:0.2102.2
+    image: akrasnov87/datalens-control-api:0.2139.0
     environment:
       BI_API_UWSGI_WORKERS_COUNT: 4
       CONNECTOR_AVAILABILITY_VISIBLE: "clickhouse,postgres,chyt,ydb,mysql,greenplum"
@@ -30,7 +30,7 @@ services:
 
   data-api:
     container_name: datalens-data-api
-    image: ghcr.io/datalens-tech/datalens-data-api:0.2102.2
+    image: ghcr.io/datalens-tech/datalens-data-api:0.2139.0
     environment:
       GUNICORN_WORKERS_COUNT: 5
       RQE_FORCE_OFF: 1
@@ -79,7 +79,7 @@ services:
 
   us:
     container_name: datalens-us
-    image: akrasnov87/datalens-us:0.224.2
+    image: akrasnov87/datalens-us:0.239.0
     depends_on:
       - pg-us
     environment:
@@ -119,7 +119,7 @@ services:
 
   datalens:
     container_name: datalens-ui
-    image: akrasnov87/datalens-ui:0.1906.2
+    image: akrasnov87/datalens-ui:0.2000.0
     ports:
       - ${UI_PORT:-8080}:8080
     depends_on:
