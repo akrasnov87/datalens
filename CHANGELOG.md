@@ -47,6 +47,110 @@ __Внимание__: работа `zitadel` в данной реализаци�
 ### New features
 
 - добавлен интерфейс администрирования пользователей, ролей, проектов.
+## v1.11.1 (2024-09-03)
+
+### Image versions
+- datalens-control-api: 0.2139.0
+- datalens-data-api: 0.2139.0
+- datalens-ui: 0.2000.0
+- datalens-us: 0.239.0
+
+### Bug fixes
+- **Navigation**: Fix navigate route in Zitadel mode. [datalens-tech/datalens#195](https://github.com/datalens-tech/datalens/pull/195)
+
+## v1.11.0 (2024-09-02)
+
+### Image versions
+- datalens-control-api: 0.2139.0
+- datalens-data-api: 0.2139.0
+- datalens-ui: 0.1906.0 -> 0.2000.0 ([full changelog](https://github.com/datalens-tech/datalens-ui/compare/v0.1906.0...v0.2000.0))
+- datalens-us: 0.224.0 -> 0.239.0 ([full changelog](https://github.com/datalens-tech/datalens-us/compare/v0.224.0...v0.239.0))
+
+### New features
+- **Dashboards**: Support top placement for selectors titles. [datalens-tech/datalens-ui#1316](https://github.com/datalens-tech/datalens-ui/pull/1316)
+- **Navigation**: Add menu for zitadel user. [datalens-tech/datalens-ui#1344](https://github.com/datalens-tech/datalens-ui/pull/1344)
+- **Navigation**: Show tooltip with absolute modification date for collections table. [datalens-tech/datalens-ui#1370](https://github.com/datalens-tech/datalens-ui/pull/1370)
+- **Charts**: Add ENV to enable Yandex Map and set HC endpoint from ENV. [datalens-tech/datalens-ui#1413](https://github.com/datalens-tech/datalens-ui/pull/1413)
+
+### Bug fixes
+- **Dashboards**: Fix filling hint of selector with dataset description. [datalens-tech/datalens-ui#1323](https://github.com/datalens-tech/datalens-ui/pull/1323)
+- **Dashboards**: Fix margins of buttons and checkboxes in selectors. [datalens-tech/datalens-ui#1324](https://github.com/datalens-tech/datalens-ui/pull/1324)
+- **Dashboards**: Fix layout of old selector when resaving with the addition of selectors. [datalens-tech/datalens-ui#1330](https://github.com/datalens-tech/datalens-ui/pull/1330)
+- **Dashboards**: Fix dash crash when canceling deleting of selector in autoupdating group. [datalens-tech/datalens-ui#1326](https://github.com/datalens-tech/datalens-ui/pull/1326)
+- **Dashboards**: Fix too large size of widget when canceling changes to old selector on dash. [datalens-tech/datalens-ui#1325](https://github.com/datalens-tech/datalens-ui/pull/1325)
+- **Datasets**: Fix for resetting source name in sql subrequest in dataset. [datalens-tech/datalens-ui#1361](https://github.com/datalens-tech/datalens-ui/pull/1361)
+- **Charts**: Fix wizard geo-chart with old config. [datalens-tech/datalens-ui#1369](https://github.com/datalens-tech/datalens-ui/pull/1369)
+- **Navigation**: Block clicks around checkboxes in collections. [datalens-tech/datalens-ui#1368](https://github.com/datalens-tech/datalens-ui/pull/1368)
+
+### Chores
+- **General components**: Up @gravity-ui/navigation. [datalens-tech/datalens-ui#1332](https://github.com/datalens-tech/datalens-ui/pull/1332)
+- **General components**: Bump fast-xml-parser and @aws-sdk/client-s3. [datalens-tech/datalens-ui#1308](https://github.com/datalens-tech/datalens-ui/pull/1308)
+- **General components**: Update @gravity-ui/dashkit 8.10.0 -> 8.10.1. [datalens-tech/datalens-ui#1390](https://github.com/datalens-tech/datalens-ui/pull/1390)
+- **General components**: Up @gravity-ui/chartkit(5.10.2 -> 5.11.2). [datalens-tech/datalens-ui#1409](https://github.com/datalens-tech/datalens-ui/pull/1409)
+
+
+## v1.10.0 (2024-08-29)
+
+### Image versions
+- datalens-control-api: 0.2132.0 -> 0.2139.0 ([full changelog](https://github.com/datalens-tech/datalens-backend/compare/v0.2132.0...v0.2139.0))
+- datalens-data-api: 0.2132.0 -> 0.2139.0 ([full changelog](https://github.com/datalens-tech/datalens-backend/compare/v0.2132.0...v0.2139.0))
+- datalens-ui: 0.1906.0
+- datalens-us: 0.224.0
+
+### New features
+- **General components**: Add native types serialization. [datalens-tech/datalens-backend#574](https://github.com/datalens-tech/datalens-backend/pull/574)
+- **Connectors**: Add secure to file settings. [datalens-tech/datalens-backend#581](https://github.com/datalens-tech/datalens-backend/pull/581)
+- CSRF multiple secrets support added. [datalens-tech/datalens-backend#579](https://github.com/datalens-tech/datalens-backend/pull/579)
+- **General components**: Add an option to use the json serializer for non-stream requests in RQE. [datalens-tech/datalens-backend#569](https://github.com/datalens-tech/datalens-backend/pull/569)
+
+### Bug fixes
+- **Connectors**: Bitrix user field filtering fix. [datalens-tech/datalens-backend#575](https://github.com/datalens-tech/datalens-backend/pull/575)
+
+### Dependencies
+- Update Zitadel version. [datalens-tech/datalens#191](https://github.com/datalens-tech/datalens/pull/191)
+
+
+## v1.9.0 (2024-08-15)
+
+### Image versions
+- datalens-control-api: 0.2102.2 -> 0.2132.0 ([full changelog](https://github.com/datalens-tech/datalens-backend/compare/v0.2102.2...v0.2132.0))
+- datalens-data-api: 0.2102.2 -> 0.2132.0 ([full changelog](https://github.com/datalens-tech/datalens-backend/compare/v0.2102.2...v0.2132.0))
+- datalens-ui: 0.1906.0
+- datalens-us: 0.224.0
+
+### New features
+- **Connectors**: Add DB name validation to prevent custom parameters passing to the driver. [datalens-tech/datalens-backend#490](https://github.com/datalens-tech/datalens-backend/pull/490)
+- **Formula**: Add REGEXP_EXTRACT_ALL function. [datalens-tech/datalens-backend#485](https://github.com/datalens-tech/datalens-backend/pull/485)
+- **Datasets**: Add groups support in RLS. [datalens-tech/datalens-backend#534](https://github.com/datalens-tech/datalens-backend/pull/534)
+- Support extra ca_data in backend apps. [datalens-tech/datalens-backend#558](https://github.com/datalens-tech/datalens-backend/pull/558)
+- **Connectors**: Enable MSSQL connector. [datalens-tech/datalens-backend#573](https://github.com/datalens-tech/datalens-backend/pull/573)
+
+### Bug fixes
+- **Connectors**: Add Content-Type header to all requests to ClickHouse. [datalens-tech/datalens-backend#512](https://github.com/datalens-tech/datalens-backend/pull/512)
+- **Connectors**: Fallback to new connection type when replacing connection with no access. [datalens-tech/datalens-backend#566](https://github.com/datalens-tech/datalens-backend/pull/566)
+
+### Docs
+- **Connectors**: Add development guides to the [knowledge base](https://github.com/datalens-tech/datalens-backend/blob/main/kb/index.md). [datalens-tech/datalens-backend#494](https://github.com/datalens-tech/datalens-backend/pull/494)
+
+
+## v1.8.0 (2024-08-05)
+
+### Image versions
+- datalens-control-api: 0.2102.2
+- datalens-data-api: 0.2102.2
+- datalens-ui: 0.1863.0 -> 0.1906.0 ([full changelog](https://github.com/datalens-tech/datalens-ui/compare/v0.1863.0...v0.1906.0))
+- datalens-us: 0.224.0
+
+### New features
+- **Dashboards**: Add the ability to create group controls on dash. [datalens-tech/datalens-ui#1262](https://github.com/datalens-tech/datalens-ui/pull/1262)
+
+### Bug fixes
+- **Dashboards**: Support group controls in old links. [datalens-tech/datalens-ui#1294](https://github.com/datalens-tech/datalens-ui/pull/1294)
+
+### Chores
+- **Dashboards**: Refactoring dash components. [datalens-tech/datalens-ui#1263](https://github.com/datalens-tech/datalens-ui/pull/1263)
+
+
 ## v1.7.0 (2024-07-17)
 
 ### Image versions

@@ -14,7 +14,7 @@ services:
     image: akrasnov87/datalens-control-api:0.2139.0
     environment:
       BI_API_UWSGI_WORKERS_COUNT: 4
-      CONNECTOR_AVAILABILITY_VISIBLE: "clickhouse,postgres,chyt,ydb,mysql,greenplum"
+      CONNECTOR_AVAILABILITY_VISIBLE: "clickhouse,postgres,chyt,ydb,mysql,greenplum,mssql"
       RQE_FORCE_OFF: 1
       DL_CRY_ACTUAL_KEY_ID: key_1
       DL_CRY_KEY_VAL_ID_key_1: "h1ZpilcYLYRdWp7Nk8X1M1kBPiUi8rdjz9oBfHyUKIk="
@@ -136,6 +136,7 @@ services:
       US_ENDPOINT: "http://host.docker.internal:8083"
       BI_API_ENDPOINT: "http://host.docker.internal:8081"
       BI_DATA_ENDPOINT: "http://host.docker.internal:8082"
+      US_MASTER_TOKEN: "fake-us-master-token"
       NODE_EXTRA_CA_CERTS: "/usr/local/share/ca-certificates/cert.pem"
       FLAT_TABLE_ROWS_LIMIT: 100000
       FETCHING_TIMEOUT_SEC: 120
