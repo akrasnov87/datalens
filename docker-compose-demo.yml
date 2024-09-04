@@ -11,7 +11,7 @@ services:
 
   control-api:
     container_name: datalens-control-api-${APP_ENV}
-    image: akrasnov87/datalens-control-api:0.2102.2
+    image: akrasnov87/datalens-control-api:0.2139.0
     environment:
       BI_API_UWSGI_WORKERS_COUNT: 4
       CONNECTOR_AVAILABILITY_VISIBLE: "clickhouse,postgres,chyt,ydb"
@@ -79,7 +79,7 @@ services:
 
   us:
     container_name: datalens-us-${APP_ENV}
-    image: akrasnov87/datalens-us:0.224.2
+    image: akrasnov87/datalens-us:0.239.0
     depends_on:
       - pg-us
     environment:
@@ -110,14 +110,14 @@ services:
       CONNECT_STR: ${METADATA_POSTGRES_DSN_LIST:-postgres://us:us@pg-us:5432/us-db-ci_purgeable}
       PROJECT_ID: ${PROJECT_ID:-datalens-demo}
       NODE_THREAD: 2
-      VERSION_CONTAINER: 0.1.7
+      VERSION_CONTAINER: 0.1.9
       AUTH_KEY_MODE: ${AUTH_KEY_MODE:-false}
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
   datalens:
     container_name: datalens-ui-${APP_ENV}
-    image: akrasnov87/datalens-ui:0.1906.2
+    image: akrasnov87/datalens-ui:0.2000.0
     ports:
       - ${UI_PORT:-8080}:8080
     depends_on:
