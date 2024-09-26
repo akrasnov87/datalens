@@ -79,7 +79,7 @@ services:
 
   us:
     container_name: datalens-us
-    image: akrasnov87/datalens-us:0.239.1
+    image: akrasnov87/datalens-us:0.239.2
     depends_on:
       - pg-us
     environment:
