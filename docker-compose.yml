@@ -70,7 +70,7 @@ services:
 
   us:
     container_name: datalens-us
-    image: ghcr.io/datalens-tech/datalens-us:0.239.0
+    image: ghcr.io/datalens-tech/datalens-us:0.246.0
     depends_on:
       - pg-us 
     ports:
@@ -105,7 +105,7 @@ services:
 
   datalens:
     container_name: datalens-ui
-    image: ghcr.io/datalens-tech/datalens-ui:0.2000.0
+    image: ghcr.io/datalens-tech/datalens-ui:0.2140.0
     ports:
       - ${UI_PORT:-8080}:8080
     depends_on:
@@ -126,5 +126,9 @@ services:
       US_MASTER_TOKEN: "fake-us-master-token"
       NODE_EXTRA_CA_CERTS: "/usr/local/share/ca-certificates/cert.pem"
       HC: ${HC:-0}
+      YANDEX_MAP_ENABLED: ${YANDEX_MAP_ENABLED:-0}
+      YANDEX_MAP_TOKEN: ${YANDEX_MAP_TOKEN}
+    
     extra_hosts:
       - "host.docker.internal:host-gateway"
+

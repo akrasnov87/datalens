@@ -148,5 +148,7 @@ services:
       OIDC_CLIENT_ID: ${OIDC_CLIENT_ID}
       OIDC_SECRET: ${OIDC_SECRET}
       OIDC_NAME: ${OIDC_NAME:-OIDC}
+      YANDEX_MAP_ENABLED: ${YANDEX_MAP_ENABLED:-0}
+      YANDEX_MAP_TOKEN: ${YANDEX_MAP_TOKEN}
     extra_hosts:
       - "host.docker.internal:host-gateway"
