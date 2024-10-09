@@ -368,11 +368,11 @@ docker compose -p datalens_demo -f docker-compose-demo.yml --env-file ./.env.dem
 
 ## Локальное сохранение
 <pre>
-docker save -o containers/datalens-control-api.tar akrasnov87/datalens-control-api:0.2102.2
-docker save -o containers/datalens-data-api.tar ghcr.io/datalens-tech/datalens-data-api:0.2102.2
-docker save -o containers/datalens-us.tar akrasnov87/datalens-us:0.214.0
-docker save -o containers/datalens-ui.tar akrasnov87/datalens-ui:0.1794.0
-docker save -o containers/datalens-auth.tar akrasnov87/datalens-auth:0.1.5
+docker save -o containers/datalens-control-api.tar akrasnov87/datalens-control-api:0.2139.0
+docker save -o containers/datalens-data-api.tar ghcr.io/datalens-tech/datalens-data-api:0.2139.0
+docker save -o containers/datalens-us.tar akrasnov87/datalens-us:0.246.0
+docker save -o containers/datalens-ui.tar akrasnov87/datalens-ui:0.2140.1
+docker save -o containers/datalens-auth.tar akrasnov87/datalens-auth:0.2.2
 </pre>
 
 #### What are the minimum system requirements?
