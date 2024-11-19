@@ -58,7 +58,7 @@ services:
       POSTGRES_USER: demo
       POSTGRES_PASSWORD: demo
     volumes:
-      - db-demo:/var/lib/postgresql/data
+      - ./pg-demo-connection/data:/var/lib/postgresql/data
       - ./pg-demo-connection/init:/docker-entrypoint-initdb.d
 
   pg-us:
