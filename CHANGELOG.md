@@ -1,3 +1,12 @@
+## v1.16.0.1 (2024-11-19)
+
+### Image versions
+
+* datalens-control-api: 0.2139.0 -> 0.2176.0 (full changelog)
+* datalens-data-api: 0.2139.0 -> 0.2176.0 (full changelog)
+* datalens-ui: 0.2312.0
+* datalens-us: 0.260.0
+
 ## v1.12.0.1 (2024-10-07)
 
 * исправлена Feature в datalens-ui
