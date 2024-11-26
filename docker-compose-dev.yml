@@ -77,7 +77,7 @@ services:
 
   us:
     container_name: datalens-us-${APP_ENV}
-    image: akrasnov87/datalens-us:0.260.0
+    image: akrasnov87/datalens-us:0.275.0
     depends_on:
       - pg-us
     environment:
@@ -89,6 +89,8 @@ services:
       USE_DEMO_DATA: ${USE_DEMO_DATA:-1}
       USE_AUTH_DATA: ${USE_AUTH_DATA:-1}
       PROJECT_ID: ${PROJECT_ID:-datalens-demo}
+      SQL_DEBUG: true
+      US_SURPRESS_DB_STATUS_LOGS: true
       HC: ${HC:-0}
       NODE_EXTRA_CA_CERTS: /certs/root.crt
       NODE_RPC_URL: ${NODE_RPC_URL:-http://us-auth/${AUTH_ENV:-demo}/rpc}
@@ -118,12 +120,12 @@ services:
 
   datalens:
     container_name: datalens-ui-${APP_ENV}
-    image: akrasnov87/datalens-ui:0.2312.0
+    image: akrasnov87/datalens-ui:0.2371.0
     ports:
       - ${UI_PORT:-8080}:8080
     depends_on:
-      - us
       - us-auth
+      - us
       - control-api
       - data-api
       - pg-demo-connection
