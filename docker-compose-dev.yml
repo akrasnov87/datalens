@@ -9,10 +9,10 @@ services:
 
   control-api:
     container_name: datalens-control-api-${APP_ENV}
-    image: akrasnov87/datalens-control-api:0.2176.0
+    image: akrasnov87/datalens-control-api:0.2202.2
     environment:
       BI_API_UWSGI_WORKERS_COUNT: 4
-      CONNECTOR_AVAILABILITY_VISIBLE: "clickhouse,postgres,chyt,ydb,mysql,greenplum,mssql,appmetrica_api,metrika_api"
+      CONNECTOR_AVAILABILITY_VISIBLE: "clickhouse,postgres,chyt,ydb,mysql,greenplum,mssql"
       RQE_FORCE_OFF: 1
       DL_CRY_ACTUAL_KEY_ID: key_1
       DL_CRY_KEY_VAL_ID_key_1: "h1ZpilcYLYRdWp7Nk8X1M1kBPiUi8rdjz9oBfHyUKIk="
@@ -28,7 +28,7 @@ services:
 
   data-api:
     container_name: datalens-data-api-${APP_ENV}
-    image: ghcr.io/datalens-tech/datalens-data-api:0.2176.0
+    image: ghcr.io/datalens-tech/datalens-data-api:0.2202.2
     environment:
       GUNICORN_WORKERS_COUNT: 5
       RQE_FORCE_OFF: 1
@@ -53,6 +53,8 @@ services:
   pg-demo-connection:
     container_name: datalens-pg-demo-connection-${APP_ENV}
     image: postgres:13-alpine
+    ports:
+      - 5433:5432
     environment:
       POSTGRES_DB: demo
       POSTGRES_USER: demo
@@ -77,7 +79,7 @@ services:
 
   us:
     container_name: datalens-us-${APP_ENV}
-    image: akrasnov87/datalens-us:0.275.0
+    image: akrasnov87/datalens-us:0.303.0
     depends_on:
       - pg-us
     environment:
@@ -120,7 +122,7 @@ services:
 
   datalens:
     container_name: datalens-ui-${APP_ENV}
-    image: akrasnov87/datalens-ui:0.2371.0
+    image: akrasnov87/datalens-ui:0.2587.0
     ports:
       - ${UI_PORT:-8080}:8080
     depends_on:

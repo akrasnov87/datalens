@@ -404,3 +404,10 @@ Summary:
 * CPU - 2 CORES
 
 This is minimal basic system requirements for OpenSource DataLens installation. Аctual consumption of VM resources depends on the complexity of requests to connections, connections types, the number of users and processing speed at the source level
+
+## Тегирование
+
+<pre>
+git tag [версия]
+git push origin [версия]
+</pre>
