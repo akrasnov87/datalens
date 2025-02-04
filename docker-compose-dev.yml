@@ -1,7 +1,7 @@
 services:
   pg-compeng:
     container_name: datalens-pg-compeng-${APP_ENV}
-    image: postgres:13-alpine
+    image: postgres:16-alpine
     environment:
       POSTGRES_PASSWORD: "postgres"
       POSTGRES_DB: postgres
@@ -52,7 +52,7 @@ services:
 
   pg-demo-connection:
     container_name: datalens-pg-demo-connection-${APP_ENV}
-    image: postgres:13-alpine
+    image: postgres:16-alpine
     ports:
       - 5433:5432
     environment:
@@ -65,7 +65,7 @@ services:
 
   pg-us:
     container_name: datalens-pg-us-${APP_ENV}
-    image: postgres:13-alpine
+    image: postgres:16-alpine
     ports:
       - 5432:5432
     environment:

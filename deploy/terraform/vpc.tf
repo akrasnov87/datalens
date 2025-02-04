@@ -56,6 +56,8 @@ data "dns_a_record_set" "this" {
 }
 
 data "dns_a_record_set" "domain" {
+  for_each = toset(!local.is_create_dns_zone ? ["main"] : [])
+
   host = local.domain
 
   depends_on = [yandex_dns_recordset.this]
@@ -72,6 +74,7 @@ locals {
 
   v4_subnets_cidr_blocks = flatten([for z in local.zones : yandex_vpc_subnet.this[z].v4_cidr_blocks])
   v4_k8s_cidr_blocks     = ["10.96.0.0/16", "10.112.0.0/16"]
+  v4_k8s_any_cidr_blocks = ["0.0.0.0/0"]
   v4_icmp_cidr_blocks    = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
   github_meta            = jsondecode(data.http.this["github"].response_body)
   v4_gh_api_cidr_blocks  = [for cidr in sort(distinct(concat(local.github_meta["packages"], local.github_meta["api"]))) : cidr if strcontains(cidr, ":") == false]
@@ -91,8 +94,10 @@ locals {
       { proto = "ANY", cidr_v4 = local.v4_subnets_cidr_blocks, from_port = 0, to_port = 65535, desc = "subnets" },
       { proto = "ANY", cidr_v4 = local.v4_k8s_cidr_blocks, from_port = 0, to_port = 65535, desc = "k8s" },
       { proto = "TCP", cidr_v4 = local.v4_gh_api_cidr_blocks, port = 443, desc = "github api" },
-      { proto = "TCP", cidr_v4 = ["${data.dns_a_record_set.domain.addrs[0]}/32"], port = 443, desc = "domain" },
-    ], [for e in local.endpoints : { proto = "TCP", cidr_v4 = ["${data.dns_a_record_set.this[e].addrs[0]}/32"], port = 443, desc = e }]
+    ],
+    local.is_create_dns_zone ? [] : [{ proto = "TCP", cidr_v4 = ["${data.dns_a_record_set.domain["main"].addrs[0]}/32"], port = 443, desc = "domain" }],
+    [for e in local.endpoints : { proto = "TCP", cidr_v4 = ["${data.dns_a_record_set.this[e].addrs[0]}/32"], port = 443, desc = e }],
+    local.k8s_monitoring ? [{ proto = "TCP", cidr_v4 = local.v4_k8s_any_cidr_blocks, port = 443, desc = "any" }] : [],
   )
 }
 

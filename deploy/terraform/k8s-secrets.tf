@@ -36,6 +36,8 @@ resource "kubernetes_secret" "secrets" {
 }
 
 resource "kubernetes_manifest" "secrets" {
+  for_each = toset(local.k8s_cluster_ready ? ["main"] : [])
+
   manifest = {
     apiVersion = "external-secrets.io/v1beta1"
     kind       = "ClusterSecretStore"
@@ -138,9 +140,20 @@ resource "yandex_lockbox_secret_version" "this" {
       text_value = random_password.pg_password[entries.value].result
     }
   }
+
+  dynamic "entries" {
+    for_each = local.pg_users
+
+    content {
+      key        = "PG_HOST_${upper(replace(replace(entries.value, "pg-", ""), "-user", ""))}"
+      text_value = "c-${yandex_mdb_postgresql_cluster.this.id}.rw.mdb.yandexcloud.net"
+    }
+  }
 }
 
 resource "kubernetes_manifest" "lockbox" {
+  for_each = toset(local.k8s_cluster_ready ? ["main"] : [])
+
   manifest = {
     apiVersion = "external-secrets.io/v1beta1"
     kind       = "ExternalSecret"
@@ -183,7 +196,7 @@ resource "yandex_lockbox_secret" "zitadel" {
 }
 
 resource "kubernetes_manifest" "lockbox-zitadel" {
-  for_each = toset(local.is_zitadel_enabled ? ["main"] : [])
+  for_each = toset(local.k8s_cluster_ready && local.is_zitadel_enabled ? ["main"] : [])
 
   manifest = {
     apiVersion = "external-secrets.io/v1beta1"
