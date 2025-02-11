@@ -9,7 +9,7 @@ services:
 
   control-api:
     container_name: datalens-control-api-${APP_ENV}
-    image: akrasnov87/datalens-control-api:0.2202.2
+    image: akrasnov87/datalens-control-api:0.2213.0
     environment:
       BI_API_UWSGI_WORKERS_COUNT: 4
       CONNECTOR_AVAILABILITY_VISIBLE: "clickhouse,postgres,chyt,ydb,mysql,greenplum,mssql"
@@ -28,7 +28,7 @@ services:
 
   data-api:
     container_name: datalens-data-api-${APP_ENV}
-    image: ghcr.io/datalens-tech/datalens-data-api:0.2202.2
+    image: ghcr.io/datalens-tech/datalens-data-api:0.2213.0
     environment:
       GUNICORN_WORKERS_COUNT: 5
       RQE_FORCE_OFF: 1
@@ -79,7 +79,7 @@ services:
 
   us:
     container_name: datalens-us-${APP_ENV}
-    image: akrasnov87/datalens-us:0.303.0
+    image: akrasnov87/datalens-us:0.312.0
     depends_on:
       - pg-us
     environment:
@@ -95,7 +95,7 @@ services:
       US_SURPRESS_DB_STATUS_LOGS: true
       HC: ${HC:-0}
       NODE_EXTRA_CA_CERTS: /certs/root.crt
-      NODE_RPC_URL: ${NODE_RPC_URL:-http://us-auth/${AUTH_ENV:-demo}/rpc}
+      NODE_RPC_URL: ${NODE_RPC_URL:-http://us-auth/demo/rpc}
     ports:
       - "8083:8083"
     extra_hosts:
@@ -109,8 +109,8 @@ services:
     ports:
       - "5001:80"
     environment:
-      APP_ENV: ${AUTH_ENV:-demo}
-      NODE_VPATH: /${AUTH_ENV:-demo}/
+      APP_ENV: demo
+      NODE_VPATH: /demo/
       CONNECT_STR: ${METADATA_POSTGRES_DSN_LIST:-postgres://us:us@pg-us:5432/us-db-ci_purgeable}
       PROJECT_ID: ${PROJECT_ID:-datalens-demo}
       BUDIBASE_URI: ${BUDIBASE_URI:-}
@@ -122,7 +122,7 @@ services:
 
   datalens:
     container_name: datalens-ui-${APP_ENV}
-    image: akrasnov87/datalens-ui:0.2587.0
+    image: akrasnov87/datalens-ui:0.2601.0
     ports:
       - ${UI_PORT:-8080}:8080
     depends_on:

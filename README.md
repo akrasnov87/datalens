@@ -5,6 +5,10 @@
 * [Чем отличаемся?](https://github.com/akrasnov87/datalens/blob/main/docs/features.md)
 * [Что планируем?](https://github.com/akrasnov87/datalens/blob/main/docs/roadmap.md)
 
+## Версионность
+
+Версия `datalens 1.22.0` соответствует нашей версии `0.22.0` (см. файл [CHANGELOG](CHANGELOG.md)), т.е. мы отличаемся первым символом в версии.
+
 ## Запуск Datalens с авторизацией
 
 __Внимание__: авторизация `Zitadel` не будет работать совместно с `datalens-auth`!!!
@@ -14,9 +18,13 @@ git clone https://github.com/akrasnov87/datalens && cd datalens
 docker compose -f docker-compose-demo.yml --env-file ./.env.demo up -d
 </pre>
 
+__Примечание__: если возникают проблемы, то может помочь удаление каталогов `./metadata` и `./pg-demo-connection/data`
+
 __Примечание__: процесс полного разворачивания может занять некоторое время. Если авторизация не проходит и выходит ошибка со статусом `500` - это значит backend ещё не развёрнут, ждите.
 
 __Внимание__: предварительно лучше удалить каталог `metadata`, если он есть. Но будьте __осторожны__ т.к. в папке храняться Ваши предыдущие данные!!! 
+
+__Внимание__: предварительно лучше удалить каталог `./pg-demo-connection/data` (может быть проблема с версиями postgresql)
 
 Для тестирования новых возможностей иногда используется dev-сборка, её можно запустить командой
 
@@ -309,7 +317,7 @@ NODE_RPC_URL="http://localhost:7000/demo/rpc"
 * PROJECT_ID: string - наименование проекта для public.workbooks и public.collections. По умолчанию `datalens-demo`
 * HC: integer - признак подключения чартов Highcharts
 * NODE_RPC_URL: string - строка подключения компонета авторизации [datalens-auth](https://github.com/akrasnov87/datalens-auth). По умолчанию `http://us-auth/demo/rpc`
-* AUTH_ENV: string - пространство имён для компонета авторизации [datalens-auth](https://github.com/akrasnov87/datalens-auth). По умолчанию `demo`
+* AUTH_ENV: string - ~~пространство имён для компонета авторизации [datalens-auth](https://github.com/akrasnov87/datalens-auth). По умолчанию `demo`~~
 * UI_PORT: integer - порт, на котором поднимится Datalens. По умолчанию 8080
 
 Для указание настроек OIDC авторизации, требуется передать:
