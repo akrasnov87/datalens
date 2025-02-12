@@ -49,8 +49,6 @@ services:
   pg-demo-connection:
     container_name: datalens-pg-demo-connection-${APP_ENV}
     image: postgres:16-alpine
-    ports:
-      - 5433:5432
     environment:
       POSTGRES_DB: demo
       POSTGRES_USER: demo
@@ -62,8 +60,6 @@ services:
   pg-us:
     container_name: datalens-pg-us-${APP_ENV}
     image: postgres:16-alpine
-    ports:
-      - 5432:5432
     environment:
       POSTGRES_DB: us-db-ci_purgeable
       POSTGRES_USER: us
@@ -114,7 +110,7 @@ services:
 
   datalens:
     container_name: datalens-ui-${APP_ENV}
-    image: akrasnov87/datalens-ui:0.2601.0
+    image: akrasnov87/datalens-ui:0.2601.1
     ports:
       - ${UI_PORT:-8080}:8080
     depends_on:
