@@ -306,6 +306,18 @@ NODE_RPC_URL="http://localhost:7000/demo/rpc"
 
 Для запуска выполнить `docker compose --env-file ./.env up`
 
+##### Работа с `highcharts`
+
+В сборка datalens-ui с версии 0.2601.2 локально сохранены библиотеки `highcharts`. 
+Чтобы они по умолчанию брались из локального хранилища убедитесь, что в compose файле указаны следующие переменные для контейнера `datalens`:
+
+<pre>
+HC_ENDPOINT: ${HC_ENDPOINT:-localhost:8080/highcharts}
+HC_PROTOCOL: ${HC_PROTOCOL:-http}
+</pre>
+
+Но главное помнить про особенности лицензии: https://www.highcharts.com/license
+
 ##### Список переменных
 * APP_ENV: string - тип приложения, пространства. Добавляется к наименованию контейнеров.
 * METADATA_POSTGRES_DSN_LIST: string - подключение к БД PostgreSQL. По умолчанию `postgres://us:us@pg-us:5432/us-db-ci_purgeable`
@@ -319,6 +331,7 @@ NODE_RPC_URL="http://localhost:7000/demo/rpc"
 * NODE_RPC_URL: string - строка подключения компонета авторизации [datalens-auth](https://github.com/akrasnov87/datalens-auth). По умолчанию `http://us-auth/demo/rpc`
 * AUTH_ENV: string - ~~пространство имён для компонета авторизации [datalens-auth](https://github.com/akrasnov87/datalens-auth). По умолчанию `demo`~~
 * UI_PORT: integer - порт, на котором поднимится Datalens. По умолчанию 8080
+EXPORT_DASH_EXCEL: boolean - добавляется возможность [экспорта](docs/features.md) данных в Excel для Dashboard
 
 Для указание настроек OIDC авторизации, требуется передать:
 
