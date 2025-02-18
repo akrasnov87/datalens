@@ -1,3 +1,12 @@
+## v0.23.3 (2025-02-18)
+
+* исправлена ошибка в отображении превью для `datasets`.
+* переопределён контейнер `datalens-control-api`
+
+### Image versions
+
+* datalens-control-api: 0.2213.0
+
 ## v0.23.2 (2025-02-14)
 
 * обновлены compose-файлы: *-demo.yml, *-dev.yml
