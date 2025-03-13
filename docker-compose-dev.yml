@@ -96,8 +96,8 @@ services:
       HC: ${HC:-0}
       NODE_EXTRA_CA_CERTS: /certs/root.crt
       NODE_RPC_URL: ${NODE_RPC_URL:-http://us-auth/demo/rpc}
-    #ports:
-    #  - "8083:8083"
+    ports:
+      - "8083:8083"
     extra_hosts:
       - "host.docker.internal:host-gateway"
     volumes:
@@ -122,7 +122,7 @@ services:
 
   datalens:
     container_name: datalens-ui-${APP_ENV}
-    image: akrasnov87/datalens-ui:0.2601.2
+    image: akrasnov87/datalens-ui:0.2601.3
     ports:
       - ${UI_PORT:-8080}:8080
     depends_on:

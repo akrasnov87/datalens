@@ -110,7 +110,7 @@ services:
 
   datalens:
     container_name: datalens-ui-${APP_ENV}
-    image: akrasnov87/datalens-ui:0.2601.2
+    image: akrasnov87/datalens-ui:0.2601.3
     ports:
       - ${UI_PORT:-8080}:8080
     depends_on:
