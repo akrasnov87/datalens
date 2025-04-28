@@ -1,0 +1,15 @@
+services:
+  postgres:
+    extends:
+      file: docker-compose.yaml
+      service: postgres
+    ports:
+      - 5432:5432
+    networks:
+      - default
+
+volumes:
+  db-postgres:
+
+networks:
+  default:

@@ -1,7 +1,7 @@
 services:
   postgres:
     container_name: datalens-postgres-${APP_ENV}
-    image: ghcr.io/datalens-tech/datalens-postgres:16
+    image: akrasnov87/datalens-postgres:16
     healthcheck:
       test: ["CMD", "pg_isready", "-d", "${POSTGRES_DB_US:-pg-us-db}", "-U", "${POSTGRES_USER:-pg-user}"]
       interval: 5s
@@ -30,7 +30,7 @@ services:
       INIT_DEMO_DATA: ${INIT_DEMO_DATA:-1}
       INIT_DB_DEMO: ${INIT_DB_DEMO:-1}
       #
-      INIT_DB_AUTH: ${INIT_DB_AUTH:-1}
+      INIT_DB_AUTH: ${INIT_DB_AUTH:-0}
       INIT_DB_META_MANAGER: ${INIT_DB_META_MANAGER:-1}
       INIT_DB_TEMPORAL: ${INIT_DB_TEMPORAL:-1}
       #
@@ -39,6 +39,7 @@ services:
       - db-postgres:/var/lib/postgresql/data
     networks:
       - default
+
   #
   control-api:
     container_name: datalens-control-api-${APP_ENV}
@@ -63,6 +64,7 @@ services:
     volumes: []
     networks:
       - default
+
   #
   data-api:
     container_name: datalens-data-api-${APP_ENV}
@@ -94,10 +96,10 @@ services:
     volumes: []
     networks:
       - default
-  #
+  
   us:
     container_name: datalens-us-${APP_ENV}
-    image: ghcr.io/datalens-tech/datalens-us:0.346.0
+    image: akrasnov87/datalens-us:0.346.0
     environment:
       APP_INSTALLATION: opensource
       APP_ENV: prod
@@ -112,16 +114,18 @@ services:
       US_SURPRESS_DB_STATUS_LOGS: 'true'
       #
       SKIP_INSTALL_DB_EXTENSIONS: 1
-      USE_DEMO_DATA: 0
       #
       HC: ${HC:-0}
       #
-      AUTH_ENABLED: ${AUTH_ENABLED:-true}
+      AUTH_ENABLED: ${AUTH_ENABLED:-false}
       AUTH_TOKEN_PUBLIC_KEY: ${AUTH_TOKEN_PUBLIC_KEY:------BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA+HICDZMfimMIiGdd0dPr\n2N3zxHOJqiVXuvUj/aBBS7c8760rJUh4344sP/0Gid558yH/v1MtzZ0R9w09v6gb\nSNrSiNwIUNGPhbnm9Jf+kMezsI/rkcIdoVm3KJ8CFUYy6MRPzW7iJmIVRHBb82v1\nmAYCCQFU6IRtFIa9hQ8wedWwxqXZekSNS+6NB37dmmQB9kz2E3MY+KRLigOh4i3p\nCZ1ti3HVvMa9Rlgk9FmoWExzub5ECChqwm+vn8yFXjYW7kUSClcV2xx4nbQWqjrR\nyyLk6W2BNOuCFVvz0j+5XkpLAt7tljtVZc+572HBEKpF2mAdmAip5NzeDhKqucJ+\nZQIDAQAB\n-----END PUBLIC KEY-----}
     
       PROJECT_ID: ${PROJECT_ID:-datalens-demo}
       SQL_DEBUG: 'true'
       NODE_RPC_URL: ${NODE_RPC_URL:-http://us-auth/demo/rpc}
+      USE_AUTH_DATA: 1
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     depends_on:
       postgres:
         condition: service_healthy
@@ -145,33 +149,6 @@ services:
       - default
   
   #
-  auth:
-    container_name: datalens-auth-${APP_ENV}
-    image: ghcr.io/datalens-tech/datalens-auth:0.17.0
-    environment:
-      APP_INSTALLATION: opensource
-      APP_ENV: prod
-      #
-      MASTER_TOKEN: ${AUTH_MASTER_TOKEN:-auth-master-token}
-      US_MASTER_TOKEN: ${US_MASTER_TOKEN:-us-master-token}
-      #
-      POSTGRES_DSN_LIST: "postgres://${POSTGRES_USER:-pg-user}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB_AUTH:-pg-auth-db}${POSTGRES_ARGS:-}"
-      US_SURPRESS_DB_STATUS_LOGS: 'true'
-      #
-      SKIP_INSTALL_DB_EXTENSIONS: 1
-      #
-      TOKEN_PRIVATE_KEY: ${AUTH_TOKEN_PRIVATE_KEY:------BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQD4cgINkx+KYwiI\nZ13R0+vY3fPEc4mqJVe69SP9oEFLtzzvrSslSHjfjiw//QaJ3nnzIf+/Uy3NnRH3\nDT2/qBtI2tKI3AhQ0Y+Fueb0l/6Qx7Owj+uRwh2hWbconwIVRjLoxE/NbuImYhVE\ncFvza/WYBgIJAVTohG0Uhr2FDzB51bDGpdl6RI1L7o0Hft2aZAH2TPYTcxj4pEuK\nA6HiLekJnW2LcdW8xr1GWCT0WahYTHO5vkQIKGrCb6+fzIVeNhbuRRIKVxXbHHid\ntBaqOtHLIuTpbYE064IVW/PSP7leSksC3u2WO1Vlz7nvYcEQqkXaYB2YCKnk3N4O\nEqq5wn5lAgMBAAECggEAKxtE5ewP/efe9CPTMHPvqOohwIU3bpEaHrMn8nqaubNq\nXD+Ui9x+NHOrk9KoDsXOLPRKNn0NJm7JTi869oUJbuOgweRDgRpLJ62wt+GjZqVv\ntQPToK+oinVRhTfJmb1bWe2t1vwVOwmrnPtNyPeDXkQ0mDFl9Q39CyGxwmN3SrwE\ncwKM9vFXxiH60T2UHok7/BW7Usb+4WJA4ov/bEoYAzkDQUnnRzjJO1RXFWjC8//M\nXjuI0NZsQXK3LV9yukSONInevoc1MnoGHwe9UZ67tDnJigY9rd4fT6B1yiKuzLDv\noiDPdpm3plh/JnPLM16nOm7zJkmsbKG2RwfzUmLNxQKBgQD827lAPp3ePUrmRQQb\nXwqb4zNQZgDUBQc0bU6F1BxWQtx5LTafnjOYmqqhakpZrMDh69T/TwH8kbDutXcR\nMWAO96yZ1IYRqsrorz4i4bCww1wDTpn7Aqz0xPkJqAucrfkUYoELf/Fl4P1dq4bs\n4OkuMLtHefI2qd/3utQOhEnauwKBgQD7iD94k9RHpHL0vb4n4Jb2EC4I/se3J1Ls\n0F37veMCQXOFKuWrka81DsqdRxu/wqZI4fkMnIe7NjGro2FFZg8MA3i4I6v3KRv9\nRyTrLNXspIESjZ2oAkuVT9npRf86whvZa2H3n4bIowJHwak3lF63xq6jnVZlCkQL\nTEhlRMFJXwKBgAmMlrtpYfbho7F8i8Io3bKzat2vbHqVUgdV1XBSaVuMnNzqqzRt\n+g7aUHVWGUa3snUVve6CYlXSfrcVHVEF51XJXrhUgVerdoxBCfyxP0X9qrzpPAFx\nwWxg//KwaPfazhxJ+AuiIlCxpX/jGW5atBOtfXUektojojSt1pJRxqQ/AoGAPcXd\nSKCNjratYLvEmoiGqpGYrK7dn3Zx4CTgH/YnbSNj2n2JgBQ8QjyKuAuBnhuQuO9+\nOYGrt+d8VVm/hsqkwV+M4zQnhIC9FfvF7lfJhd90r3jGEj/WDipZKvf80ZJgQooj\nuiucb2PRKIxAIZ03kcyikR4P3KqjwV6PnQdArOMCgYBwBq8mBNlJwYUuLruQ1RM7\n5LbP1e8C/YZ75N3CLPA14kDoW8qYC6X+KCQQgPXlQGDvTzAxg382NV53704H4ZAh\nPVuwnoZzVs9VgOHduu8nUHHzh8+ukl+fX9dyzq/wjulx8fXcRewTXh9I892EjcJy\nBG41O8RqoSHlssbZaJnugw==\n-----END PRIVATE KEY-----}
-      TOKEN_PUBLIC_KEY: ${AUTH_TOKEN_PUBLIC_KEY:------BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA+HICDZMfimMIiGdd0dPr\n2N3zxHOJqiVXuvUj/aBBS7c8760rJUh4344sP/0Gid558yH/v1MtzZ0R9w09v6gb\nSNrSiNwIUNGPhbnm9Jf+kMezsI/rkcIdoVm3KJ8CFUYy6MRPzW7iJmIVRHBb82v1\nmAYCCQFU6IRtFIa9hQ8wedWwxqXZekSNS+6NB37dmmQB9kz2E3MY+KRLigOh4i3p\nCZ1ti3HVvMa9Rlgk9FmoWExzub5ECChqwm+vn8yFXjYW7kUSClcV2xx4nbQWqjrR\nyyLk6W2BNOuCFVvz0j+5XkpLAt7tljtVZc+572HBEKpF2mAdmAip5NzeDhKqucJ+\nZQIDAQAB\n-----END PUBLIC KEY-----}
-      AUTH_ADMIN_PASSWORD: ${AUTH_ADMIN_PASSWORD:-admin}
-      #
-      UI_APP_ENDPOINT: ${UI_APP_ENDPOINT:-}
-    depends_on:
-      postgres:
-        condition: service_healthy
-    volumes: []
-    networks:
-      - default
-  #
   ui:
     container_name: datalens-ui-${APP_ENV}
     image: akrasnov87/datalens-ui:0.2864.0
@@ -183,7 +160,7 @@ services:
       AUTH_POLICY: disabled
       #
       US_ENDPOINT: http://us:8080
-      AUTH_ENDPOINT: http://auth:8080
+      #AUTH_ENDPOINT: http://auth:8080
       BI_API_ENDPOINT: http://control-api:8080
       BI_DATA_ENDPOINT: http://data-api:8080
       #
@@ -195,7 +172,7 @@ services:
       YANDEX_MAP_ENABLED: ${YANDEX_MAP_ENABLED:-0}
       YANDEX_MAP_TOKEN: ${YANDEX_MAP_TOKEN:-}
       #
-      AUTH_ENABLED: ${AUTH_ENABLED:-true}
+      AUTH_ENABLED: ${AUTH_ENABLED:-false}
       AUTH_MASTER_TOKEN: ${AUTH_MASTER_TOKEN:-auth-master-token}
       AUTH_TOKEN_PUBLIC_KEY: ${AUTH_TOKEN_PUBLIC_KEY:------BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA+HICDZMfimMIiGdd0dPr\n2N3zxHOJqiVXuvUj/aBBS7c8760rJUh4344sP/0Gid558yH/v1MtzZ0R9w09v6gb\nSNrSiNwIUNGPhbnm9Jf+kMezsI/rkcIdoVm3KJ8CFUYy6MRPzW7iJmIVRHBb82v1\nmAYCCQFU6IRtFIa9hQ8wedWwxqXZekSNS+6NB37dmmQB9kz2E3MY+KRLigOh4i3p\nCZ1ti3HVvMa9Rlgk9FmoWExzub5ECChqwm+vn8yFXjYW7kUSClcV2xx4nbQWqjrR\nyyLk6W2BNOuCFVvz0j+5XkpLAt7tljtVZc+572HBEKpF2mAdmAip5NzeDhKqucJ+\nZQIDAQAB\n-----END PUBLIC KEY-----}
     
@@ -216,6 +193,7 @@ services:
       - ${UI_PORT:-8080}:8080
     networks:
       - default
+
 #
 volumes:
   db-postgres:

@@ -401,6 +401,13 @@ NODE_RPC_URL="http://localhost:7000/demo/rpc"
 
 Для запуска выполнить `docker compose --env-file ./.env up`
 
+##### Собираем собственный datalens-postgres
+
+<pre>
+cd postgres
+docker build -t akrasnov87/datalens-postgres:16 .
+</pre>
+
 ##### Работа с `highcharts`
 
 В сборка datalens-ui с версии 0.2601.2 локально сохранены библиотеки `highcharts`. 

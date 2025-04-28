@@ -32,7 +32,7 @@ if [ ! -z "${US_ENDPOINT}" ]; then
   echo "  [demo] sleep ${DEMO_DATA_SLEEP} seconds..."
   sleep "${DEMO_DATA_SLEEP}"
 
-  RETRIES="30"
+  RETRIES="5"
   echo "  [demo] retries: ${RETRIES}"
 
   for RETRY in $(seq 1 $RETRIES); do
@@ -56,6 +56,8 @@ fi
 echo "  [demo] import demo data..."
 echo "  [demo] postgres host: ${POSTGRES_HOST}"
 echo "  [demo] postgres port: ${POSTGRES_PORT}"
+echo "  [demo] postgres user: ${POSTGRES_USER_DEMO}"
+echo "  [demo] postgres db: ${POSTGRES_DB_DEMO}"
 
 export PGPASSWORD="${POSTGRES_PASSWORD_DEMO}"
 

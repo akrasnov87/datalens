@@ -90,7 +90,6 @@ services:
       SKIP_INSTALL_DB_EXTENSIONS: ${METADATA_SKIP_INSTALL_DB_EXTENSIONS:-0}
       USE_DEMO_DATA: ${USE_DEMO_DATA:-1}
       USE_AUTH_DATA: ${USE_AUTH_DATA:-1}
-      PROJECT_ID: ${PROJECT_ID:-datalens-demo}
       SQL_DEBUG: true
       US_SURPRESS_DB_STATUS_LOGS: true
       HC: ${HC:-0}

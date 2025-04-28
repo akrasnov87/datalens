@@ -41,7 +41,7 @@ services:
     networks:
       - default
 
-  auth:
+  us-auth:
     extends:
       file: docker-compose.yaml
       service: us-auth
