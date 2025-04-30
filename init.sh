@@ -8,10 +8,12 @@ set -eo pipefail
 
 ENV_FILE_PATH=".env"
 
+APP_ENV="prod"
 IS_HC_ENABLED="false"
+IS_HC_LOCAL="false"
 IS_YANDEX_MAP_ENABLED="false"
 IS_DEMO_ENABLED="true"
-IS_AUTH_ENABLED="true"
+IS_AUTH_ENABLED="false"
 
 IS_UP="false"
 IS_HELP="false"
@@ -39,6 +41,10 @@ for _ in "$@"; do
     ;;
   --hc)
     IS_HC_ENABLED="true"
+    shift # past argument with no value
+    ;;
+  --hc-local)
+    IS_HC_LOCAL="true"
     shift # past argument with no value
     ;;
   --yandex-map)
@@ -72,6 +78,11 @@ for _ in "$@"; do
     ;;
   --postgres-cert)
     POSTGRES_CERT="${2}"
+    shift # past argument
+    shift # past value
+    ;;
+  --app-env)
+    APP_ENV="${2}"
     shift # past argument
     shift # past value
     ;;
@@ -175,6 +186,7 @@ if [ "${IS_HELP}" == "true" ]; then
   echo "Usage: ./init.sh [--hc] [--domain <domain>] [--https] [--disable-demo] [--disable-auth] [--up]"
   echo ""
   echo "  --hc - enable Highcharts library"
+  echo "  --hc-local - enable Highcharts library without remote server"
   echo "  --yandex-map - enable Yandex Maps visualization type"
   echo "  --yandex-map-token <token> - provide token for Yandex Maps API"
   echo "  --disable-demo - disable demo data initialization"
@@ -182,6 +194,7 @@ if [ "${IS_HELP}" == "true" ]; then
   echo "  --postgres-external - disable built-in PostgreSQL service"
   echo "  --postgres-ssl - set SSL mode to [verify-full] for PostgreSQL connection"
   echo "  --postgres-cert <path> - set path to SSL certificate file for PostgreSQL connection"
+  echo "  --app-env - set app mode"
   echo "  --demo - run demo data initialization script for external PostgreSQL database"
   echo "  --ip <ip> - set custom ip address for deployment"
   echo "  --domain <domain> - set custom domain for deployment"
@@ -199,6 +212,7 @@ load_env
 echo ""
 echo "Available script arguments:"
 echo "  --hc - enable Highcharts library"
+echo "  --hc-local - enable Highcharts library without remote server"
 echo "  --yandex-map - enable Yandex Maps visualization type"
 echo "  --yandex-map-token <token> - provide token for Yandex Maps API"
 echo "  --disable-demo - disable demo data initialization"
@@ -221,7 +235,7 @@ gen_sec US_MASTER_TOKEN 32
 echo "  - CONTROL_API_CRYPTO_KEY"
 gen_sec CONTROL_API_CRYPTO_KEY 32 base64
 
-COMPOSE_UP_SERVICES="control-api data-api us ui"
+COMPOSE_UP_SERVICES="control-api data-api us ui us-auth"
 
 if [ "${IS_POSTGRES_EXTERNAL}" != "true" ]; then
   COMPOSE_UP_SERVICES="${COMPOSE_UP_SERVICES} postgres"
@@ -260,13 +274,20 @@ else
   export AUTH_TOKEN_PUBLIC_KEY="-"
   export AUTH_TOKEN_PRIVATE_KEY="-"
 
-  write_env AUTH_ENABLED "false"
-  write_env AUTH_TYPE "NONE"
+  #write_env AUTH_ENABLED "false"
+  #write_env AUTH_TYPE "NONE"
 fi
 
 if [ "${IS_HC_ENABLED}" == "true" ]; then
   export HC="1"
   write_env HC "1"
+fi
+
+if [ "${IS_HC_LOCAL}" == "true" ]; then
+  export HC_ENDPOINT="localhost:8080/highcharts"
+  export HC_PROTOCOL="http"
+  write_env HC_ENDPOINT "localhost:8080/highcharts"
+  write_env HC_PROTOCOL "http"
 fi
 
 if [ "${IS_YANDEX_MAP_ENABLED}" == "true" ]; then
@@ -279,6 +300,8 @@ if [ "${IS_DEMO_ENABLED}" != "true" ]; then
   export INIT_DEMO_DATA="0"
   write_env INIT_DEMO_DATA "0"
 fi
+
+write_env APP_ENV "${APP_ENV}"
 
 # shellcheck disable=SC2236
 if [ ! -z "${DOMAIN}" ]; then

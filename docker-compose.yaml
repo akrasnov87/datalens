@@ -58,7 +58,7 @@ services:
       #
       CONNECTOR_AVAILABILITY_VISIBLE: clickhouse,postgres,chyt,ydb,mysql,greenplum,mssql,appmetrica_api,metrika_api
       #
-      AUTH__TYPE: ${AUTH_TYPE:-NATIVE}
+      AUTH__TYPE: ${AUTH_TYPE:-NONE}
       AUTH__JWT_ALGORITHM: 'PS256'
       AUTH__JWT_KEY: ${AUTH_TOKEN_PUBLIC_KEY:------BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA+HICDZMfimMIiGdd0dPr\n2N3zxHOJqiVXuvUj/aBBS7c8760rJUh4344sP/0Gid558yH/v1MtzZ0R9w09v6gb\nSNrSiNwIUNGPhbnm9Jf+kMezsI/rkcIdoVm3KJ8CFUYy6MRPzW7iJmIVRHBb82v1\nmAYCCQFU6IRtFIa9hQ8wedWwxqXZekSNS+6NB37dmmQB9kz2E3MY+KRLigOh4i3p\nCZ1ti3HVvMa9Rlgk9FmoWExzub5ECChqwm+vn8yFXjYW7kUSClcV2xx4nbQWqjrR\nyyLk6W2BNOuCFVvz0j+5XkpLAt7tljtVZc+572HBEKpF2mAdmAip5NzeDhKqucJ+\nZQIDAQAB\n-----END PUBLIC KEY-----}
     volumes: []
@@ -86,7 +86,7 @@ services:
       #
       US_MASTER_TOKEN: ${US_MASTER_TOKEN:-us-master-token}
       #
-      AUTH__TYPE: ${AUTH_TYPE:-NATIVE}
+      AUTH__TYPE: ${AUTH_TYPE:-NONE}
       AUTH__JWT_ALGORITHM: 'PS256'
       AUTH__JWT_KEY: ${AUTH_TOKEN_PUBLIC_KEY:------BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA+HICDZMfimMIiGdd0dPr\n2N3zxHOJqiVXuvUj/aBBS7c8760rJUh4344sP/0Gid558yH/v1MtzZ0R9w09v6gb\nSNrSiNwIUNGPhbnm9Jf+kMezsI/rkcIdoVm3KJ8CFUYy6MRPzW7iJmIVRHBb82v1\nmAYCCQFU6IRtFIa9hQ8wedWwxqXZekSNS+6NB37dmmQB9kz2E3MY+KRLigOh4i3p\nCZ1ti3HVvMa9Rlgk9FmoWExzub5ECChqwm+vn8yFXjYW7kUSClcV2xx4nbQWqjrR\nyyLk6W2BNOuCFVvz0j+5XkpLAt7tljtVZc+572HBEKpF2mAdmAip5NzeDhKqucJ+\nZQIDAQAB\n-----END PUBLIC KEY-----}
       COMMON_TIMEOUT_SEC: 120
@@ -120,10 +120,10 @@ services:
       AUTH_ENABLED: ${AUTH_ENABLED:-false}
       AUTH_TOKEN_PUBLIC_KEY: ${AUTH_TOKEN_PUBLIC_KEY:------BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA+HICDZMfimMIiGdd0dPr\n2N3zxHOJqiVXuvUj/aBBS7c8760rJUh4344sP/0Gid558yH/v1MtzZ0R9w09v6gb\nSNrSiNwIUNGPhbnm9Jf+kMezsI/rkcIdoVm3KJ8CFUYy6MRPzW7iJmIVRHBb82v1\nmAYCCQFU6IRtFIa9hQ8wedWwxqXZekSNS+6NB37dmmQB9kz2E3MY+KRLigOh4i3p\nCZ1ti3HVvMa9Rlgk9FmoWExzub5ECChqwm+vn8yFXjYW7kUSClcV2xx4nbQWqjrR\nyyLk6W2BNOuCFVvz0j+5XkpLAt7tljtVZc+572HBEKpF2mAdmAip5NzeDhKqucJ+\nZQIDAQAB\n-----END PUBLIC KEY-----}
     
-      PROJECT_ID: ${PROJECT_ID:-datalens-demo}
       SQL_DEBUG: 'true'
       NODE_RPC_URL: ${NODE_RPC_URL:-http://us-auth/demo/rpc}
       USE_AUTH_DATA: 1
+      POSTGRES_USER: ${POSTGRES_USER:-pg-user}
     extra_hosts:
       - "host.docker.internal:host-gateway"
     depends_on:
@@ -133,12 +133,14 @@ services:
     networks:
       - default
 
+  #
   us-auth:
     container_name: datalens-auth-${APP_ENV}
     image: akrasnov87/datalens-auth:0.2.4
     environment:
       APP_ENV: demo
       NODE_VPATH: /demo/
+      #
       CONNECT_STR: "postgres://${POSTGRES_USER:-pg-user}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB_US:-pg-us-db}${POSTGRES_ARGS:-}"
       PROJECT_ID: ${PROJECT_ID:-datalens-demo}
       BUDIBASE_URI: ${BUDIBASE_URI:-}
@@ -166,7 +168,7 @@ services:
       #
       US_MASTER_TOKEN: ${US_MASTER_TOKEN:-us-master-token}
       #
-      RELEASE_VERSION: '2.0.0'
+      RELEASE_VERSION: '2.1.0'
       #
       HC: ${HC:-0}
       YANDEX_MAP_ENABLED: ${YANDEX_MAP_ENABLED:-0}
@@ -186,6 +188,9 @@ services:
       OIDC_CLIENT_ID: ${OIDC_CLIENT_ID}
       OIDC_SECRET: ${OIDC_SECRET}
       OIDC_NAME: ${OIDC_NAME:-OIDC}
+
+      HC_ENDPOINT: ${HC_ENDPOINT:-}
+      HC_PROTOCOL: ${HC_PROTOCOL:-https}
     depends_on:
       - us
     volumes: []

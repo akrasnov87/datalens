@@ -1,10 +1,9 @@
 # DataLens &middot; [![Release](https://img.shields.io/github/v/release/datalens-tech/datalens?logo=github&color=orange)](https://github.com/datalens-tech/datalens/releases) [![last commit](https://img.shields.io/github/last-commit/datalens-tech/datalens?logo=github)](https://github.com/datalens-tech/datalens/commits/main)
 
-[![datalens-ui](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fgithub.com%2Fdatalens-tech%2Fdatalens%2Fraw%2Fmain%2Fversions-config.json&query=%24.uiVersion&label=ui%20version)](https://github.com/datalens-tech/datalens/datalens-ui)
-[![datalens-us](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fgithub.com%2Fdatalens-tech%2Fdatalens%2Fraw%2Fmain%2Fversions-config.json&query=%24.usVersion&label=us%20version)](https://github.com/datalens-tech/datalens/datalens-us)
-[![datalens-backend](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fgithub.com%2Fdatalens-tech%2Fdatalens%2Fraw%2Fmain%2Fversions-config.json&query=%24.backendVersion&label=backend%20version)](https://github.com/datalens-tech/datalens/datalens-backend)
-[![datalens-auth](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fgithub.com%2Fdatalens-tech%2Fdatalens%2Fraw%2Fmain%2Fversions-config.json&query=%24.authVersion&label=auth%20version)](https://github.com/datalens-tech/datalens/datalens-auth)
-
+[![datalens-ui](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fgithub.com%2Fakrasnov87%2Fdatalens%2Fraw%2Fmain%2Fversions-config.json&query=%24.uiVersion&label=ui%20version)](https://github.com/akrasnov87/datalens/datalens-ui)
+[![datalens-us](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fgithub.com%2Fakrasnov87%2Fdatalens%2Fraw%2Fmain%2Fversions-config.json&query=%24.usVersion&label=us%20version)](https://github.com/akrasnov87/datalens/datalens-us)
+[![datalens-backend](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fgithub.com%2Fakrasnov87%2Fdatalens%2Fraw%2Fmain%2Fversions-config.json&query=%24.backendVersion&label=backend%20version)](https://github.com/akrasnov87/datalens/datalens-backend)
+[![datalens-auth](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fgithub.com%2Fakrasnov87%2Fdatalens%2Fraw%2Fmain%2Fversions-config.json&query=%24.authVersion&label=auth%20version)](https://github.com/akrasnov87/datalens/datalens-auth)
 
 
 [**DataLens**](https://datalens.tech) is a modern business intelligence and data visualization system. It was developed and extensively used as a primary BI tool in Yandex and is also available as a part of [Yandex Cloud](https://datalens.yandex.com) platform. See also [our roadmap](https://github.com/orgs/datalens-tech/projects/1), [releases notes](https://github.com/datalens-tech/datalens/releases) and [community in telegram](https://t.me/YandexDataLens).
@@ -14,32 +13,36 @@
 
 ## Версионность
 
-Версия `datalens 1.22.0` соответствует нашей версии `0.22.0` (см. файл [CHANGELOG](CHANGELOG.md)), т.е. мы отличаемся первым символом в версии.
+Версия `datalens v2.1.0` соответствует нашей версии `v2.1.0-night` (см. файл [CHANGELOG](CHANGELOG.md)).
 
 ## Запуск Datalens с авторизацией
 
-__Внимание__: авторизация `Zitadel` не будет работать совместно с `datalens-auth`!!!
+__Внимание__: Текущая базовая авторизация `datalens` не будет работать совместно с `datalens-auth (us-auth)`!!!
 
 <pre>
 git clone https://github.com/akrasnov87/datalens && cd datalens
-docker compose -f docker-compose-demo.yml --env-file ./.env.demo up -d
+./init.sh --hc --hc-local --up
 </pre>
 
-__Примечание__: если возникают проблемы, то может помочь удаление каталогов `./metadata` и `./pg-demo-connection/data`
+Либо можно запустить вручную:
+<pre>
+docker compose -f docker-compose.dev.yaml --env-file=./.env up
+</pre>
+
+Где в .env должны быть следующие значения:
+<pre>
+POSTGRES_PASSWORD=postgres
+US_MASTER_TOKEN=fake-master-token
+CONTROL_API_CRYPTO_KEY="fake-crypto-key"
+HC=1
+APP_ENV=prod
+HC_ENDPOINT=localhost:8080/highcharts
+HC_PROTOCOL=http
+</pre>
+
+__Примечание__: если возникают проблемы, то может помочь удаление из `volumes` хранилища с наименованием `datalens_db-postgres`.
 
 __Примечание__: процесс полного разворачивания может занять некоторое время. Если авторизация не проходит и выходит ошибка со статусом `500` - это значит backend ещё не развёрнут, ждите.
-
-__Внимание__: предварительно лучше удалить каталог `metadata`, если он есть. Но будьте __осторожны__ т.к. в папке храняться Ваши предыдущие данные!!! 
-
-__Внимание__: предварительно лучше удалить каталог `./pg-demo-connection/data` (может быть проблема с версиями postgresql)
-
-Для тестирования новых возможностей иногда используется dev-сборка, её можно запустить командой
-
-<pre>
-docker compose -f docker-compose-dev.yml --env-file ./.env up -d
-</pre>
-
-Основное отличие её от демонстрационной это - появление новых функций, которые тестируются или дорабатываются.
 
 ### Авторизация
 
@@ -75,8 +78,6 @@ docker compose -f docker-compose-dev.yml --env-file ./.env up -d
 ### Структура
 
 При работе с решением `datalens`, где включена авторизация в базе данных создаётся новая схема `core`. В ней присутствуют таблицы и функции, которые обеспечивают механизм авторизации.
-
-__Примечание__: если требуется отключить создание данных для авторизации, то указываем параметр USE_AUTH_DATA=0
 
 #### Описание основных таблицы:
 
@@ -120,6 +121,7 @@ __Расшифровка прав__
   * Add - права на создание
   * Update - права на редактирование
   * Delete - права на удалениеы 
+
 
 ### Авторы доработки
 
@@ -183,12 +185,6 @@ docker compose -f ./docker-compose.production.yaml up -d
 Randomly generated admin password will be stored in the `.env` file and printed to terminal.
 
 **Note:** You can find all script arguments by running the `./init.sh --help` command
-
-Для подключения компонета авторизации ([datalens-auth](https://github.com/akrasnov87/datalens-auth)) требуется передать параметр `NODE_RPC_URL`
-
-```bash
-NODE_RPC_URL=http://localhost:7000/demo/rpc docker compose up
-```
 
 
 <details>
@@ -488,22 +484,14 @@ git pull upstream main
 В корне проекта есть специальный `compose` файл:
 
 <pre>
-docker compose -p datalens_demo -f docker-compose-demo.yml --env-file ./.env.demo up -d
+docker compose -f docker-compose.dev.yaml --env-file=./.env up -d
 </pre>
 
 Просмотр логов:
 <pre>
-docker compose -p datalens_demo -f docker-compose-demo.yml --env-file ./.env.demo logs -n 100
+docker compose -f docker-compose.dev.yaml --env-file=./.env logs -n 100
 </pre>
 
-## Локальное сохранение
-<pre>
-docker save -o containers/datalens-control-api.tar akrasnov87/datalens-control-api:0.2139.0
-docker save -o containers/datalens-data-api.tar ghcr.io/datalens-tech/datalens-data-api:0.2139.0
-docker save -o containers/datalens-us.tar akrasnov87/datalens-us:0.246.0
-docker save -o containers/datalens-ui.tar akrasnov87/datalens-ui:0.2140.1
-docker save -o containers/datalens-auth.tar akrasnov87/datalens-auth:0.2.2
-</pre>
 File `docker-compose.dev.yaml` is a special compose file that is needed only for development purposes. When you run DataLens in production mode, you always need to use `docker-compose.yaml` file or `./init.sh` script.
 
 #### What are the minimum system requirements?
@@ -526,7 +514,7 @@ Minimal configuration:
 
 * CPU - 2 CORES
 
-This is minimal basic system requirements for OpenSource DataLens installation. Аctual consumption of VM resources depends on the complexity of requests to connections, connections types, the number of users and processing speed at the source level
+These are the minimal basic system requirements for OpenSource DataLens installation. Actual resource consumption depends on the complexity of requests, connection types, number of users, and processing speed at the source level.
 
 ## Тегирование
 
@@ -535,4 +523,12 @@ git tag [версия]
 git push origin [версия]
 </pre>
 
-These are the minimal basic system requirements for OpenSource DataLens installation. Actual resource consumption depends on the complexity of requests, connection types, number of users, and processing speed at the source level.
+## Локальное сохранение
+<pre>
+docker save -o containers/datalens-control-api.tar akrasnov87/datalens-control-api:0.2253.0
+docker save -o containers/datalens-data-api.tar akrasnov87/datalens-data-api:0.2253.0
+docker save -o containers/datalens-us.tar akrasnov87/datalens-us:0.346.0
+docker save -o containers/datalens-ui.tar akrasnov87/datalens-ui:0.2864.0
+docker save -o containers/datalens-auth.tar akrasnov87/datalens-auth:0.2.4
+docker save -o containers/datalens-postgres.tar akrasnov87/datalens-postgres:16
+</pre>

@@ -1,5 +1,5 @@
 INSERT INTO public.workbooks (workbook_id, title, description, project_id, tenant_id, meta, created_by, created_at, deleted_at, is_template, collection_id, deleted_by, updated_by, updated_at, title_lower, sort_title) VALUES
-	(1507164764046888724, '{{DEMO_DATA_NAME}}', '', 'datalens-demo', 'common', '{}', 'systemId', '2023-09-11 08:47:20.751846+00', NULL, false, NULL, NULL, 'systemId', '2023-09-11 08:47:20.751846+00', 'opensourcedemo', '\x4f70656e736f7572636544656d6f')
+	(1507164764046888724, '{{DEMO_DATA_NAME}}', '', '{{DEMO_PROJECT_ID}}', 'common', '{}', 'systemId', '2023-09-11 08:47:20.751846+00', NULL, false, NULL, NULL, 'systemId', '2023-09-11 08:47:20.751846+00', 'opensourcedemo', '\x4f70656e736f7572636544656d6f')
 ON CONFLICT (workbook_id) DO NOTHING;
 
 INSERT INTO public.entries (scope, type, key, inner_meta, created_by, created_at, updated_by, updated_at, is_deleted, deleted_at, hidden, display_key, entry_id, saved_id, published_id, tenant_id, name, sort_name, public, unversioned_data, workbook_id) VALUES

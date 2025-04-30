@@ -1,3 +1,16 @@
+## v2.1.0-night (2025-04-30)
+
+* обновлено из ветки main;
+* исправлена ошибка с генерацией PDF;
+
+### Image versions
+
+* datalens-control-api: 0.2226.0 -> 0.2253.0
+* datalens-data-api: 0.2226.0 -> 0.2253.0
+* datalens-ui: 0.2752.0 -> 0.2864.0
+* datalens-us: 0.331.0 -> 0.346.0
+* datalens-postgres: 16
+
 ## v2.1.0 (2025-04-10)
 
 ### Image versions
