@@ -5,7 +5,7 @@ venv/
 
 .DS_Store
 .idea
-.env.iserv
+.env.*
 .env
 containers
 docker-compose-prod.yml
@@ -23,7 +23,8 @@ datalens_db.dump
 
 docker-compose.tmp.yaml
 docker-compose.production.yaml
-
+*.iserv.yaml
 dist/
 pg-demo-connection
 metadata
+table-report-headers
