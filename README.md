@@ -13,7 +13,7 @@
 
 ## Версионность
 
-Версия `datalens v2.1.0` соответствует нашей версии `v2.1.0-night` (см. файл [CHANGELOG](CHANGELOG.md)).
+Версия `datalens v2.2.0` соответствует нашей версии `v2.2.0-night` (см. файл [CHANGELOG](CHANGELOG.md)).
 
 ## Запуск Datalens с авторизацией
 
