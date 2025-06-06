@@ -8,6 +8,33 @@ services:
     networks:
       - default
 
+  temporal:
+    extends:
+      file: docker-compose.yaml
+      service: temporal
+    environment:
+      TEMPORAL_AUTH_ENABLED: false
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - 7233:7233
+    networks:
+      - default
+
+  temporal-ui:
+    container_name: datalens-temporal-ui
+    image: ghcr.io/datalens-tech/temporal-ui:2.34.0
+    environment:
+      TEMPORAL_ADDRESS: temporal:7233
+      TEMPORAL_AUTH_ENABLED: false
+    depends_on:
+      - temporal
+    ports:
+      - 8233:8080
+    networks:
+      - default
+
   control-api:
     extends:
       file: docker-compose.yaml
@@ -38,6 +65,31 @@ services:
         condition: service_healthy
     ports:
       - 8030:8080
+    networks:
+      - default
+
+  ui-api:
+    extends:
+      file: docker-compose.yaml
+      service: ui-api
+    depends_on:
+      - us
+    ports:
+      - 3040:8080
+    networks:
+      - default
+
+  meta-manager:
+    extends:
+      file: docker-compose.yaml
+      service: meta-manager
+    depends_on:
+      temporal:
+        condition: service_healthy
+      ui-api:
+        condition: service_started
+    ports:
+      - 3050:8080
     networks:
       - default
 
