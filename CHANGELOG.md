@@ -1,3 +1,13 @@
+## v2.2.1-night (2025-06-09)
+
+* добавлен импорт и экспорт workbook.
+
+### Image versions
+
+* datalens-ui: 0.2989.0 -> 0.2991.0
+* datalens-meta-manager: 0.36.0
+
+
 ## v2.2.0-night (2025-06-06)
 
 * обновлено из ветки main;

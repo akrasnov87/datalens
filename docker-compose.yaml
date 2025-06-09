@@ -165,7 +165,7 @@ services:
   #
   ui-api:
     container_name: datalens-ui-api
-    image: ghcr.io/datalens-tech/datalens-ui:0.2933.0
+    image: akrasnov87/datalens-ui:0.2991.0
     environment:
       APP_MODE: api
       APP_ENV: production
@@ -181,7 +181,7 @@ services:
   #
   meta-manager:
     container_name: datalens-meta-manager
-    image: ghcr.io/datalens-tech/datalens-meta-manager:0.32.0
+    image: akrasnov87/datalens-meta-manager:0.36.0
     environment:
       APP_INSTALLATION: opensource
       APP_ENV: prod
@@ -201,6 +201,8 @@ services:
       #
       AUTH_ENABLED: ${AUTH_ENABLED:-false}
       AUTH_TOKEN_PUBLIC_KEY: ${AUTH_TOKEN_PUBLIC_KEY:------BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA+HICDZMfimMIiGdd0dPr\n2N3zxHOJqiVXuvUj/aBBS7c8760rJUh4344sP/0Gid558yH/v1MtzZ0R9w09v6gb\nSNrSiNwIUNGPhbnm9Jf+kMezsI/rkcIdoVm3KJ8CFUYy6MRPzW7iJmIVRHBb82v1\nmAYCCQFU6IRtFIa9hQ8wedWwxqXZekSNS+6NB37dmmQB9kz2E3MY+KRLigOh4i3p\nCZ1ti3HVvMa9Rlgk9FmoWExzub5ECChqwm+vn8yFXjYW7kUSClcV2xx4nbQWqjrR\nyyLk6W2BNOuCFVvz0j+5XkpLAt7tljtVZc+572HBEKpF2mAdmAip5NzeDhKqucJ+\nZQIDAQAB\n-----END PUBLIC KEY-----}
+      #
+      NODE_RPC_URL: ${NODE_RPC_URL:-http://us-auth/demo/rpc}
     depends_on:
       temporal:
         condition: service_healthy
@@ -229,7 +231,7 @@ services:
   #
   ui:
     container_name: datalens-ui-${APP_ENV}
-    image: akrasnov87/datalens-ui:0.2864.2
+    image: akrasnov87/datalens-ui:0.2991.0
     environment:
       APP_MODE: full
       APP_ENV: production
@@ -245,7 +247,7 @@ services:
       #
       US_MASTER_TOKEN: ${US_MASTER_TOKEN:-us-master-token}
       #
-      RELEASE_VERSION: '2.1.0-night'
+      RELEASE_VERSION: ${RELEASE_VERSION:-2.2.1-night}
       #
       HC: ${HC:-0}
       #
