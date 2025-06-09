@@ -128,7 +128,7 @@ services:
   
   us:
     container_name: datalens-us-${APP_ENV}
-    image: akrasnov87/datalens-us:0.356.0
+    image: akrasnov87/datalens-us:0.356.1
     environment:
       APP_INSTALLATION: opensource
       APP_ENV: prod
