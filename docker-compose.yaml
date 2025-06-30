@@ -5,8 +5,9 @@ services:
     pull_policy: ${IMAGE_PULL_POLICY:-always}
     healthcheck:
       test: ["CMD", "pg_isready", "-d", "${POSTGRES_DB_US:-pg-us-db}", "-U", "${POSTGRES_USER:-pg-user}"]
-      interval: 5s
-      retries: 10
+      interval: 10s
+      retries: 6
+      timeout: 5s
       start_period: 3s
     environment:
       HC: ${HC:-0}
@@ -43,13 +44,14 @@ services:
 
   #
   temporal:
-    container_name: datalens-temporal
+    container_name: datalens-temporal-${APP_ENV}
     image: ghcr.io/datalens-tech/datalens-temporal:1.27.2
     pull_policy: ${IMAGE_PULL_POLICY:-always}
     healthcheck:
       test: ["CMD", "/etc/temporal/healthcheck.sh"]
-      interval: 5s
-      retries: 10
+      interval: 10s
+      retries: 6
+      timeout: 5s
       start_period: 3s
     environment:
       POSTGRES_HOST: ${POSTGRES_HOST:-postgres}
@@ -72,7 +74,7 @@ services:
   #
   control-api:
     container_name: datalens-control-api-${APP_ENV}
-    image: akrasnov87/datalens-control-api:0.2277.0
+    image: akrasnov87/datalens-control-api:0.2287.0
     environment:
       BI_API_UWSGI_WORKERS_COUNT: 4
       RQE_FORCE_OFF: 1
@@ -85,7 +87,7 @@ services:
       #
       US_MASTER_TOKEN: ${US_MASTER_TOKEN:-us-master-token}
       #
-      CONNECTOR_AVAILABILITY_VISIBLE: clickhouse,postgres,chyt,ydb,mysql,greenplum,mssql,appmetrica_api,metrika_api
+      CONNECTOR_AVAILABILITY_VISIBLE: clickhouse,postgres,chyt,ydb,mysql,greenplum,mssql,oracle,trino,appmetrica_api,metrika_api
       #
       AUTH__TYPE: ${AUTH_TYPE:-NONE}
       AUTH__JWT_ALGORITHM: 'PS256'
@@ -97,7 +99,7 @@ services:
   #
   data-api:
     container_name: datalens-data-api-${APP_ENV}
-    image: akrasnov87/datalens-data-api:0.2277.0
+    image: akrasnov87/datalens-data-api:0.2287.0
     environment:
       GUNICORN_WORKERS_COUNT: 5
       RQE_FORCE_OFF: 1
@@ -128,7 +130,7 @@ services:
   
   us:
     container_name: datalens-us-${APP_ENV}
-    image: akrasnov87/datalens-us:0.356.1
+    image: akrasnov87/datalens-us:0.360.0
     environment:
       APP_INSTALLATION: opensource
       APP_ENV: prod
@@ -164,8 +166,8 @@ services:
 
   #
   ui-api:
-    container_name: datalens-ui-api
-    image: akrasnov87/datalens-ui:0.2991.0
+    container_name: datalens-ui-api-${APP_ENV}
+    image: akrasnov87/datalens-ui:0.3025.0
     environment:
       APP_MODE: api
       APP_ENV: production
@@ -180,8 +182,8 @@ services:
       - default
   #
   meta-manager:
-    container_name: datalens-meta-manager
-    image: akrasnov87/datalens-meta-manager:0.36.0
+    container_name: datalens-meta-manager-${APP_ENV}
+    image: akrasnov87/datalens-meta-manager:0.38.0
     environment:
       APP_INSTALLATION: opensource
       APP_ENV: prod
@@ -247,7 +249,7 @@ services:
       #
       US_MASTER_TOKEN: ${US_MASTER_TOKEN:-us-master-token}
       #
-      RELEASE_VERSION: ${RELEASE_VERSION:-2.2.1-night}
+      RELEASE_VERSION: ${RELEASE_VERSION:-2.3.0-night}
       #
       HC: ${HC:-0}
       #
@@ -283,6 +285,7 @@ services:
 #
 volumes:
   db-postgres:
+    name: datalens-volume-${APP_ENV}
 #
 networks:
   default:

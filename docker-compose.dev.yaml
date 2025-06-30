@@ -116,6 +116,7 @@ services:
 
 volumes:
   db-postgres:
+    name: datalens-volume-${APP_ENV}
 
 networks:
   default:
