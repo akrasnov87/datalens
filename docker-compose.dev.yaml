@@ -21,9 +21,14 @@ services:
       - 7233:7233
     networks:
       - default
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "3"  # количество файлов
+        max-size: "5m" # размер файла лога
 
   temporal-ui:
-    container_name: datalens-temporal-ui
+    container_name: datalens-temporal-ui-${APP_ENV}
     image: ghcr.io/datalens-tech/temporal-ui:2.34.0
     environment:
       TEMPORAL_ADDRESS: temporal:7233
@@ -34,6 +39,11 @@ services:
       - 8233:8080
     networks:
       - default
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "3"  # количество файлов
+        max-size: "5m" # размер файла лога
 
   control-api:
     extends:
@@ -92,6 +102,11 @@ services:
       - 3050:8080
     networks:
       - default
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "3"  # количество файлов
+        max-size: "5m" # размер файла лога
 
   us-auth:
     extends:
@@ -104,6 +119,11 @@ services:
       - 8088:80
     networks:
       - default
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "3"  # количество файлов
+        max-size: "5m" # размер файла лога
 
   ui:
     extends:

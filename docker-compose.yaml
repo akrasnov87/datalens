@@ -41,7 +41,6 @@ services:
       - db-postgres:/var/lib/postgresql/data
     networks:
       - default
-
   #
   temporal:
     container_name: datalens-temporal-${APP_ENV}
@@ -229,7 +228,6 @@ services:
       AUTH_KEY_MODE: ${AUTH_KEY_MODE:-false}
     networks:
       - default
-  
   #
   ui:
     container_name: datalens-ui-${APP_ENV}
