@@ -166,7 +166,7 @@ services:
   #
   ui-api:
     container_name: datalens-ui-api-${APP_ENV}
-    image: akrasnov87/datalens-ui:0.3025.0
+    image: akrasnov87/datalens-ui:0.3025.1
     environment:
       APP_MODE: api
       APP_ENV: production
@@ -231,7 +231,7 @@ services:
   #
   ui:
     container_name: datalens-ui-${APP_ENV}
-    image: akrasnov87/datalens-ui:0.2991.0
+    image: akrasnov87/datalens-ui:0.3025.1
     environment:
       APP_MODE: full
       APP_ENV: production
@@ -247,7 +247,7 @@ services:
       #
       US_MASTER_TOKEN: ${US_MASTER_TOKEN:-us-master-token}
       #
-      RELEASE_VERSION: ${RELEASE_VERSION:-2.3.0-night}
+      RELEASE_VERSION: ${RELEASE_VERSION:-2.3.1-night}
       #
       HC: ${HC:-0}
       #
