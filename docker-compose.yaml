@@ -82,7 +82,8 @@ services:
       DL_CRY_ACTUAL_KEY_ID: KEY
       DL_CRY_KEY_VAL_ID_KEY: "${CONTROL_API_CRYPTO_KEY:-ZGF0YWxlbnN1bnNlY3VyZWZlcm5ldGNyeXB0b2tleQo=}"
       #
-      US_HOST: http://us:8080
+      US_HOST: http://host.docker.internal:8083
+      #US_HOST: http://us:8080
       #
       US_MASTER_TOKEN: ${US_MASTER_TOKEN:-us-master-token}
       #
@@ -112,7 +113,8 @@ services:
       BI_COMPENG_PG_ON: 1
       BI_COMPENG_PG_URL: "postgres://${POSTGRES_USER:-pg-user}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB_COMPENG:-pg-compeng-db}${POSTGRES_ARGS:-}"
       #
-      US_HOST: http://us:8080
+      US_HOST: http://host.docker.internal:8083
+      #US_HOST: http://us:8080
       #
       US_MASTER_TOKEN: ${US_MASTER_TOKEN:-us-master-token}
       #
@@ -129,7 +131,7 @@ services:
   
   us:
     container_name: datalens-us-${APP_ENV}
-    image: akrasnov87/datalens-us:0.360.0
+    image: akrasnov87/datalens-us:0.386.0
     environment:
       APP_INSTALLATION: opensource
       APP_ENV: prod
@@ -172,8 +174,10 @@ services:
       APP_ENV: production
       APP_INSTALLATION: opensource
       #
-      US_ENDPOINT: http://us:8080
-      BI_API_ENDPOINT: http://control-api:8080
+      #US_ENDPOINT: http://us:8080
+      US_ENDPOINT: http://host.docker.internal:8083
+      #BI_API_ENDPOINT: http://control-api:8080
+      BI_API_ENDPOINT: http://host.docker.internal:8010
     depends_on:
       - us
     volumes: []
@@ -182,7 +186,7 @@ services:
   #
   meta-manager:
     container_name: datalens-meta-manager-${APP_ENV}
-    image: akrasnov87/datalens-meta-manager:0.38.0
+    image: akrasnov87/datalens-meta-manager:0.46.0
     environment:
       APP_INSTALLATION: opensource
       APP_ENV: prod
@@ -193,7 +197,8 @@ services:
       #
       POSTGRES_DSN_LIST: "postgres://${POSTGRES_USER:-pg-user}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB_META_MANAGER:-pg-meta-manager-db}${POSTGRES_ARGS:-}"
       #
-      US_ENDPOINT: http://us:8080
+      #US_ENDPOINT: http://us:8080
+      US_ENDPOINT: http://host.docker.internal:8083
       UI_API_ENDPOINT: http://ui-api:8080
       #
       TEMPORAL_ENDPOINT: temporal:7233
@@ -203,7 +208,8 @@ services:
       AUTH_ENABLED: ${AUTH_ENABLED:-false}
       AUTH_TOKEN_PUBLIC_KEY: ${AUTH_TOKEN_PUBLIC_KEY:------BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA+HICDZMfimMIiGdd0dPr\n2N3zxHOJqiVXuvUj/aBBS7c8760rJUh4344sP/0Gid558yH/v1MtzZ0R9w09v6gb\nSNrSiNwIUNGPhbnm9Jf+kMezsI/rkcIdoVm3KJ8CFUYy6MRPzW7iJmIVRHBb82v1\nmAYCCQFU6IRtFIa9hQ8wedWwxqXZekSNS+6NB37dmmQB9kz2E3MY+KRLigOh4i3p\nCZ1ti3HVvMa9Rlgk9FmoWExzub5ECChqwm+vn8yFXjYW7kUSClcV2xx4nbQWqjrR\nyyLk6W2BNOuCFVvz0j+5XkpLAt7tljtVZc+572HBEKpF2mAdmAip5NzeDhKqucJ+\nZQIDAQAB\n-----END PUBLIC KEY-----}
       #
-      NODE_RPC_URL: ${NODE_RPC_URL:-http://us-auth/demo/rpc}
+      #NODE_RPC_URL: ${NODE_RPC_URL:-http://us-auth/demo/rpc}
+      NODE_RPC_URL: ${NODE_RPC_URL:-http://host.docker.internal:8088/demo/rpc}
     depends_on:
       temporal:
         condition: service_healthy
@@ -275,8 +281,8 @@ services:
     depends_on:
       - us
     volumes: []
-    ports:
-      - ${UI_PORT:-8080}:8080
+    #ports:
+    #  - ${UI_PORT:-8080}:8080
     networks:
       - default
 

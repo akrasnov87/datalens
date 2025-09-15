@@ -73,8 +73,8 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-    ports:
-      - 8030:8080
+    # ports:
+    #   - 8030:8080
     networks:
       - default
 
