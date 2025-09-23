@@ -12,6 +12,7 @@ containers
 docker-compose-prod.yml
 docker-compose-dev.yml
 .env
+.env.*
 
 debug.log
 cert.pem

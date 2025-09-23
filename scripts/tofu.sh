@@ -13,6 +13,7 @@ IS_APPLY="false"
 IS_APPROVE="false"
 IS_INIT="false"
 IS_TOFURC="false"
+IS_LOCK="false"
 IS_SILENT="false"
 IS_LINT="false"
 IS_LINT_FIX="false"
@@ -93,6 +94,10 @@ for _ in "$@"; do
     ;;
   --tofurc)
     IS_TOFURC="true"
+    shift # past argument with no value
+    ;;
+  --lock)
+    IS_LOCK="true"
     shift # past argument with no value
     ;;
   --lint)
@@ -193,7 +198,10 @@ if [ ! "${YC_PROFILE_EXISTS}" == "true" ]; then
     yc --profile "${PROFILE_NAME}" config set cloud-id "${CLOUD_ID}" &>/dev/null || exit 1
     yc --profile "${PROFILE_NAME}" config set folder-id "${FOLDER_ID}" &>/dev/null || exit 1
     yc --profile "${PROFILE_NAME}" config set endpoint "${API_ENDPOINT}:443" &>/dev/null || exit 1
-    yc config set service-account-key "${SA_FILE}" &>/dev/null || exit 1
+    # shellcheck disable=SC2236
+    if [ ! -z "${SA_FILE}" ]; then
+      yc --profile "${PROFILE_NAME}" config set service-account-key "${SA_FILE}" &>/dev/null || exit 1
+    fi
   else
     echo "❌ service account file '${SA_FILE}' does not exists, configure profile '${PROFILE_NAME}' manually at 'yc' cli or provider sa account file, exit..."
   fi
@@ -267,10 +275,10 @@ if [ "${IS_TOFURC}" == "true" ]; then
   echo 'provider_installation {
   network_mirror {
     url = "https://'"${TOFU_MIRROR}"'/"
-    include = ["registry.opentofu.org/*/*"]
+    include = ["registry.terraform.io/*/*", "registry.opentofu.org/*/*"]
   }
   direct {
-    exclude = ["registry.opentofu.org/*/*"]
+    exclude = ["registry.terraform.io/*/*", "registry.opentofu.org/*/*"]
   }
 }' >~/.tofurc
 fi
@@ -287,6 +295,31 @@ if [ "${IS_INIT}" == "true" ]; then
   else
     tofu init -reconfigure -upgrade || exit 1
   fi
+fi
+
+if [ "${IS_LOCK}" == "true" ]; then
+  echo ""
+  echo "🔐 update lock file..."
+  echo ""
+
+  # remove old lock file
+  rm -f .terraform.lock.hcl
+
+  tofu providers lock \
+    -net-mirror="https://${TOFU_MIRROR}" \
+    -platform=linux_amd64 \
+    -platform=linux_arm64 \
+    -platform=darwin_arm64 \
+    -platform=darwin_amd64 \
+    hashicorp/dns \
+    hashicorp/helm \
+    hashicorp/http \
+    hashicorp/local \
+    hashicorp/random \
+    hashicorp/time \
+    hashicorp/tls \
+    hashicorp/kubernetes \
+    registry.terraform.io/yandex-cloud/yandex
 fi
 
 echo ""
