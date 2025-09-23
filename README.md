@@ -40,6 +40,49 @@ POSTGRES_USER=pg-user
 RELEASE_VERSION=2.5.0-night
 </pre>
 
+Если после запуска у Вас нет демонстрационных данных, то требуется заменить значения переменных:
+
+<pre>
+POSTGRES_PASSWORD=postgres
+US_MASTER_TOKEN=fake-master-token
+CONTROL_API_CRYPTO_KEY="fake-crypto-key"
+</pre>
+
+на что-то более "внятное", например на:
+<pre>
+POSTGRES_PASSWORD=tKODz7UWSUjwLKo1YupiI7rQPbStzgJw
+US_MASTER_TOKEN=y3nV3VncLywC4tTOuytGinbfPpfbA7Ax
+CONTROL_API_CRYPTO_KEY="YWdoMHk1WjRyWlJYcXRLVHhWODBsMTRUd3lDaU8zSzQ="
+</pre>
+
+Ошибка в контейнере datalens-postgres
+<pre>
+demo] import us demo entries...
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/cryptography/fernet.py", line 33, in __init__
+    key = base64.urlsafe_b64decode(key)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/base64.py", line 134, in urlsafe_b64decode
+    return b64decode(s)
+           ^^^^^^^^^^^^
+  File "/usr/lib/python3.11/base64.py", line 88, in b64decode
+    return binascii.a2b_base64(s, strict_mode=validate)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+binascii.Error: Incorrect padding
+ 
+The above exception was the direct cause of the following exception:
+ 
+Traceback (most recent call last):
+  File "/init/crypto.py", line 13, in <module>
+    main()
+  File "/init/crypto.py", line 7, in main
+    fernet = Fernet(sys.argv[1])
+             ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/cryptography/fernet.py", line 35, in __init__
+    raise ValueError(
+ValueError: Fernet key must be 32 url-safe base64-encoded bytes.
+</pre>
+
 __Примечание__: если возникают проблемы, то может помочь удаление из `volumes` хранилища с наименованием `datalens_db-postgres`.
 
 __Примечание__: процесс полного разворачивания может занять некоторое время. Если авторизация не проходит и выходит ошибка со статусом `500` - это значит backend ещё не развёрнут, ждите.
