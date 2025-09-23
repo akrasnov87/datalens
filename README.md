@@ -14,7 +14,7 @@
 
 ## Версионность
 
-Версия `datalens v2.3.0` соответствует нашей версии `v2.3.0-night` (см. файл [CHANGELOG](CHANGELOG.md)).
+Версия `datalens v2.5.0` соответствует нашей версии `v2.5.0-night` (см. файл [CHANGELOG](CHANGELOG.md)).
 
 ## Запуск Datalens с авторизацией
 
@@ -22,13 +22,10 @@ __Внимание__: Текущая базовая авторизация `data
 
 <pre>
 git clone https://github.com/akrasnov87/datalens && cd datalens
-./init.sh --hc --hc-local --up
+docker compose -f docker-compose.demo.yaml --env-file=./.env up
 </pre>
 
-Либо можно запустить вручную:
-<pre>
-docker compose -f docker-compose.dev.yaml --env-file=./.env up
-</pre>
+__Примечание__: ранее запуск был через файл `docker-compose.dev.yaml`
 
 Где в .env должны быть следующие значения:
 <pre>
@@ -39,6 +36,8 @@ HC=1
 APP_ENV=prod
 HC_ENDPOINT=localhost:8080/highcharts
 HC_PROTOCOL=http
+POSTGRES_USER=pg-user
+RELEASE_VERSION=2.5.0-night
 </pre>
 
 __Примечание__: если возникают проблемы, то может помочь удаление из `volumes` хранилища с наименованием `datalens_db-postgres`.
