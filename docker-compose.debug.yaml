@@ -1,0 +1,60 @@
+services:
+  postgres:
+    extends:
+      file: docker-compose.yaml
+      service: postgres
+    ports:
+      - 5432:5432
+    networks:
+      - default
+
+  control-api:
+    extends:
+      file: docker-compose.yaml
+      service: control-api
+    ports:
+      - 8010:8080
+    networks:
+      - default
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  data-api:
+    extends:
+      file: docker-compose.yaml
+      service: data-api
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - 8020:8080
+    networks:
+      - default
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  us-auth:
+    extends:
+      file: docker-compose.yaml
+      service: us-auth
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - 8088:80
+    networks:
+      - default
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "3"  # количество файлов
+        max-size: "5m" # размер файла лога
+
+volumes:
+  db-postgres:
+    name: datalens-volume-${APP_ENV}
+
+networks:
+  default:

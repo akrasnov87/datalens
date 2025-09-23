@@ -1,3 +1,16 @@
+## v2.5.0-night (2025-09-23)
+
+* обновлено дол версии `2.5.0`;
+* добавлена возможность пропустить миграции, переменная `SKIP_MIGRATION` для `datalens-us`.
+
+### Image versions
+
+* datalens-control-api: 0.2287.0
+* datalens-data-api: 0.2287.0
+* datalens-ui: 0.3168.0
+* datalens-us: 0.375.0
+* datalens-meta-manager: 0.46.0
+ 
 ## v2.3.1-night (2025-08-25)
 
 * доработан механизм выгрузки отчётов на основе dashboard;

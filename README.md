@@ -503,6 +503,10 @@ docker compose -f docker-compose.dev.yaml --env-file=./.env logs -n 100
 
 File `docker-compose.dev.yaml` is a special compose file that is needed only for development purposes. When you run DataLens in production mode, you always need to use `docker-compose.yaml` file or `./init.sh` script.
 
+#### Принудительное отключение миграции
+
+Чтобы отключить автоматическую миграцию требуется добавить переменную `SKIP_MIGRATION` в контейнер `datalens-us`. Значение переменной не важно, главное передать.
+
 #### How can I disable authentication?
 
 If you need to run DataLens without authentication (for development or testing purposes), you can use the `--disable-auth` flag with the init script:
