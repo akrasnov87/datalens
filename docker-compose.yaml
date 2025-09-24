@@ -156,6 +156,7 @@ services:
       NODE_RPC_URL: ${NODE_RPC_URL:-http://us-auth/demo/rpc}
       USE_AUTH_DATA: 1
       POSTGRES_USER: ${POSTGRES_USER:-pg-user}
+      SKIP_MIGRATION: ${SKIP_MIGRATION:-0}
     depends_on:
       postgres:
         condition: service_healthy
