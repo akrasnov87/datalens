@@ -215,7 +215,7 @@ services:
   #
   us-auth:
     container_name: datalens-auth-${APP_ENV}
-    image: akrasnov87/datalens-auth:0.2.4
+    image: akrasnov87/datalens-auth:0.2.5
     environment:
       APP_ENV: demo
       NODE_VPATH: /demo/
@@ -224,7 +224,7 @@ services:
       PROJECT_ID: ${PROJECT_ID:-datalens-demo}
       BUDIBASE_URI: ${BUDIBASE_URI:-}
       NODE_THREAD: 2
-      VERSION_CONTAINER: 0.2.4
+      VERSION_CONTAINER: 0.2.5
       AUTH_KEY_MODE: ${AUTH_KEY_MODE:-false}
     networks:
       - default
