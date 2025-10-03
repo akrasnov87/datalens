@@ -76,7 +76,7 @@ services:
   #
   control-api:
     container_name: datalens-control-api-${APP_ENV}
-    image: akrasnov87/datalens-control-api:0.2287.0
+    image: akrasnov87/datalens-control-api:0.2352.0
     environment:
       BI_API_UWSGI_WORKERS_COUNT: 4
       RQE_FORCE_OFF: 1
@@ -85,7 +85,7 @@ services:
       DL_CRY_ACTUAL_KEY_ID: KEY
       DL_CRY_KEY_VAL_ID_KEY: "${CONTROL_API_CRYPTO_KEY:-ZGF0YWxlbnN1bnNlY3VyZWZlcm5ldGNyeXB0b2tleQo=}"
       #
-      US_HOST: http://us:8080
+      US_HOST: ${US_ENDPOINT:-http://us:8080}
       #
       US_MASTER_TOKEN: ${US_MASTER_TOKEN:-us-master-token}
       #
@@ -100,7 +100,7 @@ services:
   #
   data-api:
     container_name: datalens-data-api-${APP_ENV}
-    image: akrasnov87/datalens-data-api:0.2287.0
+    image: akrasnov87/datalens-data-api:0.2352.0
     environment:
       GUNICORN_WORKERS_COUNT: 5
       RQE_FORCE_OFF: 1
@@ -114,7 +114,7 @@ services:
       BI_COMPENG_PG_ON: 1
       BI_COMPENG_PG_URL: "postgres://${POSTGRES_USER:-pg-user}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB_COMPENG:-pg-compeng-db}${POSTGRES_ARGS:-}"
       #
-      US_HOST: http://us:8080
+      US_HOST: ${US_ENDPOINT:-http://us:8080}
       #
       US_MASTER_TOKEN: ${US_MASTER_TOKEN:-us-master-token}
       #
@@ -131,7 +131,7 @@ services:
   
   us:
     container_name: datalens-us-${APP_ENV}
-    image: akrasnov87/datalens-us:0.375.0
+    image: akrasnov87/datalens-us:0.396.0
     environment:
       APP_INSTALLATION: opensource
       APP_ENV: prod
@@ -167,13 +167,13 @@ services:
   #
   ui-api:
     container_name: datalens-ui-api-${APP_ENV}
-    image: akrasnov87/datalens-ui:0.3168.0
+    image: akrasnov87/datalens-ui:0.3271.0
     environment:
       APP_MODE: api
       APP_ENV: production
       APP_INSTALLATION: opensource
       #
-      US_ENDPOINT: http://us:8080
+      US_ENDPOINT: ${US_ENDPOINT:-http://us:8080}
       BI_API_ENDPOINT: http://control-api:8080
     depends_on:
       - us
@@ -182,7 +182,7 @@ services:
   #
   meta-manager:
     container_name: datalens-meta-manager-${APP_ENV}
-    image: akrasnov87/datalens-meta-manager:0.46.0
+    image: akrasnov87/datalens-meta-manager:0.47.0
     environment:
       APP_INSTALLATION: opensource
       APP_ENV: prod
@@ -193,7 +193,7 @@ services:
       #
       POSTGRES_DSN_LIST: "postgres://${POSTGRES_USER:-pg-user}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB_META_MANAGER:-pg-meta-manager-db}${POSTGRES_ARGS:-}"
       #
-      US_ENDPOINT: http://us:8080
+      US_ENDPOINT: ${US_ENDPOINT:-http://us:8080}
       UI_API_ENDPOINT: http://ui-api:8080
       #
       TEMPORAL_ENDPOINT: temporal:7233
@@ -231,7 +231,7 @@ services:
   #
   ui:
     container_name: datalens-ui-${APP_ENV}
-    image: akrasnov87/datalens-ui:0.3168.0
+    image: akrasnov87/datalens-ui:0.3271.0
     environment:
       APP_MODE: full
       APP_ENV: production
@@ -239,14 +239,14 @@ services:
       #
       AUTH_POLICY: disabled
       #
-      US_ENDPOINT: http://us:8080
+      US_ENDPOINT: ${US_ENDPOINT:-http://us:8080}
       BI_API_ENDPOINT: http://control-api:8080
       BI_DATA_ENDPOINT: http://data-api:8080
       META_MANAGER_ENDPOINT: http://meta-manager:8080
       #
       US_MASTER_TOKEN: ${US_MASTER_TOKEN:-us-master-token}
       #
-      RELEASE_VERSION: ${RELEASE_VERSION:-2.5.0-night}
+      RELEASE_VERSION: ${RELEASE_VERSION:-2.6.1-night}
       #
       HC: ${HC:-0}
       #
@@ -260,7 +260,8 @@ services:
       AUTH_SIGNUP_DISABLED: ${AUTH_SIGNUP_DISABLED:-false}
 
       FLAT_TABLE_ROWS_LIMIT: 100000
-      FETCHING_TIMEOUT_SEC: 120
+      DATA_FETCHING_TIMEOUT_MS: 120
+      DATA_SINGLE_FETCHING_TIMEOUT_MS: 120
       UNITED_STORAGE_CONFIG_LOADED_TIMEOUT: 10000
       EXPORT_DASH_EXCEL: ${EXPORT_DASH_EXCEL:-false}
       OIDC: ${OIDC:-false}

@@ -1,3 +1,16 @@
+## v2.6.1-night (2025-10-03)
+
+Обновление до версии v2.6.1
+
+### Image versions
+
+* datalens-control-api:0.2352.0
+* datalens-data-api:0.2352.0
+* datalens-us:0.396.0
+* datalens-ui:0.3271.0
+* datalens-meta-manager:0.47.0
+* datalens-ui:0.3271.0
+
 ## v2.5.1-night (2025-09-30)
 
 * исправлен модуль авторизации для `внутренних проектов` с двухфакторным входом.
