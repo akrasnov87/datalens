@@ -215,7 +215,7 @@ services:
   #
   us-auth:
     container_name: datalens-auth-${APP_ENV}
-    image: akrasnov87/datalens-auth:0.2.5
+    image: akrasnov87/datalens-auth:0.2.6
     environment:
       APP_ENV: demo
       NODE_VPATH: /demo/
@@ -223,8 +223,9 @@ services:
       CONNECT_STR: "postgres://${POSTGRES_USER:-pg-user}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB_US:-pg-us-db}${POSTGRES_ARGS:-}"
       PROJECT_ID: ${PROJECT_ID:-datalens-demo}
       BUDIBASE_URI: ${BUDIBASE_URI:-}
+      IGNORE_SCHEMA: ${IGNORE_SCHEMA:-}
       NODE_THREAD: 2
-      VERSION_CONTAINER: 0.2.5
+      VERSION_CONTAINER: 0.2.6
       AUTH_KEY_MODE: ${AUTH_KEY_MODE:-false}
     networks:
       - default
