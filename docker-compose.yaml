@@ -167,7 +167,7 @@ services:
   #
   ui-api:
     container_name: datalens-ui-api-${APP_ENV}
-    image: akrasnov87/datalens-ui:0.3271.0
+    image: akrasnov87/datalens-ui:0.3271.1
     environment:
       APP_MODE: api
       APP_ENV: production
@@ -232,7 +232,7 @@ services:
   #
   ui:
     container_name: datalens-ui-${APP_ENV}
-    image: akrasnov87/datalens-ui:0.3271.0
+    image: akrasnov87/datalens-ui:0.3271.1
     environment:
       APP_MODE: full
       APP_ENV: production
