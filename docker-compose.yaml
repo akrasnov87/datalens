@@ -131,7 +131,7 @@ services:
   
   us:
     container_name: datalens-us-${APP_ENV}
-    image: akrasnov87/datalens-us:0.396.0
+    image: akrasnov87/datalens-us:0.413.0
     environment:
       APP_INSTALLATION: opensource
       APP_ENV: prod
@@ -167,7 +167,7 @@ services:
   #
   ui-api:
     container_name: datalens-ui-api-${APP_ENV}
-    image: akrasnov87/datalens-ui:0.3271.1
+    image: akrasnov87/datalens-ui:0.3498.0
     environment:
       APP_MODE: api
       APP_ENV: production
@@ -182,7 +182,7 @@ services:
   #
   meta-manager:
     container_name: datalens-meta-manager-${APP_ENV}
-    image: akrasnov87/datalens-meta-manager:0.47.0
+    image: akrasnov87/datalens-meta-manager:0.50.0
     environment:
       APP_INSTALLATION: opensource
       APP_ENV: prod
@@ -232,7 +232,7 @@ services:
   #
   ui:
     container_name: datalens-ui-${APP_ENV}
-    image: akrasnov87/datalens-ui:0.3271.1
+    image: akrasnov87/datalens-ui:0.3498.0
     environment:
       APP_MODE: full
       APP_ENV: production
@@ -247,7 +247,7 @@ services:
       #
       US_MASTER_TOKEN: ${US_MASTER_TOKEN:-us-master-token}
       #
-      RELEASE_VERSION: ${RELEASE_VERSION:-2.6.1-night}
+      RELEASE_VERSION: ${RELEASE_VERSION:-2.7.0-night}
       #
       HC: ${HC:-0}
       #

@@ -1,3 +1,15 @@
+## v2.7.0-night (2025-12-30)
+
+Обновление до версии v2.7.0
+
+### Image versions
+
+* datalens-us:0.413.0
+* datalens-ui:0.3498.0
+* datalens-meta-manager:0.50.0
+* datalens-control-api:0.2396.0
+* datalens-data-api:0.2396.0
+
 ## v2.6.1-night (2025-10-03)
 
 Обновление до версии v2.6.1
@@ -9,7 +21,6 @@
 * datalens-us:0.396.0
 * datalens-ui:0.3271.0
 * datalens-meta-manager:0.47.0
-* datalens-ui:0.3271.0
 
 ## v2.5.1-night (2025-09-30)
 
