@@ -37,7 +37,8 @@ APP_ENV=prod
 HC_ENDPOINT=localhost:8080/highcharts
 HC_PROTOCOL=http
 POSTGRES_USER=pg-user
-RELEASE_VERSION=2.5.0-night
+RELEASE_VERSION=2.7.0-night
+IGNORE_SCHEMA="'public','pg_catalog','information_schema'"
 </pre>
 
 Если после запуска у Вас нет демонстрационных данных, то требуется заменить значения переменных:
@@ -103,6 +104,7 @@ __Примечание__: процесс полного разворачиван
 * datalens-backend
 * datalens-ui
 * datalens-us
+* datalens-meta-manager
 * datalens
 
 Изменённые версии:
@@ -110,6 +112,7 @@ __Примечание__: процесс полного разворачиван
 * [datalens-backend](https://github.com/akrasnov87/datalens-backend)
 * [datalens-us](https://github.com/akrasnov87/datalens-us)
 * [datalens-ui](https://github.com/akrasnov87/datalens-ui)
+* [datalens-meta-manager](https://github.com/akrasnov87/datalens-meta-manager)
 * [datalens](https://github.com/akrasnov87/datalens)
 
 Создан новый компонент для авторизации:

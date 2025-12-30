@@ -26,6 +26,7 @@ IS_DEV_ENV="false"
 IS_DEV_BUILD="false"
 IS_DEV_EXPOSE_PORTS="false"
 IS_DEV_NGINX="false"
+IS_DEV_ROOT="false"
 
 IS_DEV_UI="false"
 IS_DEV_UI_API="false"
@@ -53,6 +54,7 @@ IP=""
 IS_HTTPS="false"
 
 IS_IPV6="false"
+IS_DOCKER_IPV6="false"
 
 POSTGRES_CERT=""
 IS_POSTGRES_EXTERNAL="false"
@@ -163,6 +165,10 @@ for _ in "$@"; do
     export IS_IPV6="true"
     shift # past argument with no value
     ;;
+  --docker-ipv6)
+    IS_DOCKER_IPV6="true"
+    shift # past argument with no value
+    ;;
   --up)
     IS_UP="true"
     shift # past argument with no value
@@ -200,6 +206,10 @@ for _ in "$@"; do
     ;;
   --dev-nginx)
     IS_DEV_NGINX="true"
+    shift # past argument with no value
+    ;;
+  --dev-root)
+    IS_DEV_ROOT="true"
     shift # past argument with no value
     ;;
   --dev-ui)
@@ -307,7 +317,7 @@ _init_sh_completions() {
     prev="${COMP_WORDS[COMP_CWORD-1]}"
     
     # all available options
-    opts="--help --autocomplete --hc --yandex-map --yandex-map-token --demo --disable-demo --disable-workbook-export --disable-always-image-pull --disable-auth --disable-temporal --disable-temporal-auth --postgres-external --postgres-ssl --postgres-cert --ip --domain --https --ipv6 --up --down --stop --dev --dev-env --dev-light --dev-build --dev-expose-ports --dev-nginx --dev-ui --dev-no-ui --dev-ui-api --dev-no-ui-api --dev-us --dev-no-us --dev-auth --dev-no-auth --dev-meta-manager --dev-no-meta-manager --dev-control-api --dev-no-control-api --dev-data-api --dev-no-data-api --reinit-db --rm-env --remove-env --rm-volumes --remove-volumes --legacy-docker-compose"
+    opts="--help --autocomplete --hc --yandex-map --yandex-map-token --demo --disable-demo --disable-workbook-export --disable-always-image-pull --disable-auth --disable-temporal --disable-temporal-auth --postgres-external --postgres-ssl --postgres-cert --ip --domain --https --ipv6 --docker-ipv6 --up --down --stop --dev --dev-env --dev-light --dev-build --dev-expose-ports --dev-nginx --dev-root --dev-ui --dev-no-ui --dev-ui-api --dev-no-ui-api --dev-us --dev-no-us --dev-auth --dev-no-auth --dev-meta-manager --dev-no-meta-manager --dev-control-api --dev-no-control-api --dev-data-api --dev-no-data-api --reinit-db --rm-env --remove-env --rm-volumes --remove-volumes --legacy-docker-compose"
     
     # handle options that require values
     case "${prev}" in
@@ -457,6 +467,7 @@ if [ "${IS_HELP}" == "true" ]; then
   echo "  --dev-build - rebuild development containers before starting"
   echo "  --dev-expose-ports - expose ports for all containers with socat"
   echo "  --dev-nginx - up nginx with https and self-signed certificates for development mode"
+  echo "  --dev-root - run containers with [root] user for development mode, fix write access on linux systems"
   echo "  --dev-<service> - run [ui/ui-api/us/auth/meta-manager/control-api/data-api] service in development mode"
   echo "  --dev-no-<service> - disable up [ui/ui-api/us/auth/meta-manager/control-api/data-api] service"
   echo ""
@@ -465,6 +476,7 @@ if [ "${IS_HELP}" == "true" ]; then
   echo "  --rm-env | --remove-env - remove environment file"
   echo "  --rm-volumes | --remove-volumes - remove all docker volumes"
   echo "  --ipv6 - enable IPv6 address binding for docker default network"
+  echo "  --docker-ipv6 - auto fix docker IPv6 support for linux systems"
   echo "  --legacy-docker-compose - use legacy docker-compose command instead of docker compose"
   echo ""
   exit 0
@@ -685,6 +697,45 @@ if [ "${IS_ALWAYS_IMAGE_PULL}" != "true" ]; then
   export IMAGE_PULL_POLICY="missing"
 fi
 
+if [ "${IS_DOCKER_IPV6}" == "true" ]; then
+  echo ""
+  echo "🛠️  Docker daemon check IPv6 support..."
+  echo ""
+  if [ "$(uname -s)" == "Linux" ]; then
+    if [ -f "/etc/docker/daemon.json" ]; then
+      echo "  - file [/etc/docker/daemon.json] already exists"
+      if grep -q -s '"ipv6": true' /etc/docker/daemon.json; then
+        echo "  - config IPv6 fixes already applied, skip fix"
+      else
+        echo ""
+        echo "🚨 Docker daemon IPv6 support not found at config [/etc/docker/daemon.json], need manually fix it before run..."
+        echo ""
+        exit 1
+      fi
+    else
+      echo "  - create file [/etc/docker/daemon.json] with IPv6 fixes"
+
+      sudo mkdir -p /etc/docker
+      echo '{
+          "experimental": true,
+          "ip6tables": true,
+          "ipv6": true,
+
+          "fixed-cidr-v6": "fd00::/80",
+          "default-address-pools":[
+            {"base": "172.31.0.0/16", "size": 24},
+            {"base": "fd00:501::/64", "size": 80}
+          ]
+        }' | sudo tee /etc/docker/daemon.json &>/dev/null
+
+      echo "  - restart docker daemon"
+      sudo systemctl restart docker
+    fi
+  else
+    echo "  - skip daemon fix for non Linux systems"
+  fi
+fi
+
 if [ "${IS_RUN_INIT_DEMO_DATA}" == "true" ]; then
   echo ""
   echo "Running demo data initialization for external PostgreSQL..."
@@ -707,6 +758,12 @@ if [ "${IS_DEV}" == "true" ]; then
     export COMPOSE_DISABLE_ENV_FILE=1
     echo ""
     echo "⚠️  Loading environment file for compose is disabled..."
+  fi
+
+  if [ "${IS_DEV_ROOT}" == "true" ]; then
+    export USER_DEV="root"
+    echo ""
+    echo "⚠️  Running dev containers with [root] user..."
   fi
 
   echo ""
@@ -870,6 +927,7 @@ if [ "${IS_DEV}" == "true" ]; then
   if [ -n "${COMPOSE_DOWN_SERVICES}" ]; then
     # shellcheck disable=SC2086
     docker --log-level error compose -f "${DOCKER_COMPOSE_DEV_CONFIG}" rm --stop --force ${COMPOSE_DOWN_SERVICES}
+    echo ""
   fi
 
   # shellcheck disable=SC2086
@@ -884,6 +942,11 @@ if [ "${IS_DEV}" == "true" ]; then
     # shellcheck disable=SC2086
     docker --log-level error compose -f "${DOCKER_COMPOSE_DEV_CONFIG}" up --no-deps -d ${COMPOSE_DEV_UP_SERVICES}
   fi
+  
+  echo ""
+  echo "📌 Running Docker Compose services..."
+  echo ""
+  echo "  - listen [ui] on: http://localhost:8080"
 
   if [ "${IS_DEV_EXPOSE_PORTS}" == "true" ]; then
     echo ""
@@ -895,27 +958,35 @@ if [ "${IS_DEV}" == "true" ]; then
     if [ "${IS_DEV_UI_API}" != "true" ] && [ "${IS_WORKBOOK_EXPORT_ENABLED}" == "true" ]; then
       EXPOSE_PORTS="${EXPOSE_PORTS} 3040:ui-api:8080"
       export EXPOSE_PORTS_3040="3040"
+      echo "  - listen [ui-api] on: http://localhost:3040"
     fi
     if [ "${IS_DEV_US}" != "true" ]; then
       EXPOSE_PORTS="${EXPOSE_PORTS} 3030:us:8080"
       export EXPOSE_PORTS_3030="3030"
+      echo "  - listen [us] on: http://localhost:3030"
     fi
     if [ "${IS_DEV_AUTH}" != "true" ] && [ "${IS_AUTH_ENABLED}" == "true" ]; then
       EXPOSE_PORTS="${EXPOSE_PORTS} 8088:auth:8080"
       export EXPOSE_PORTS_8088="8088"
+      echo "  - listen [auth] on: http://localhost:8088"
     fi
     if [ "${IS_DEV_META_MANAGER}" != "true" ] && [ "${IS_WORKBOOK_EXPORT_ENABLED}" == "true" ]; then
       EXPOSE_PORTS="${EXPOSE_PORTS} 3050:meta-manager:8080"
       export EXPOSE_PORTS_3050="3050"
+      echo "  - listen [meta-manager] on: http://localhost:3050"
     fi
     if [ "${IS_DEV_CONTROL_API}" != "true" ]; then
       EXPOSE_PORTS="${EXPOSE_PORTS} 8010:control-api:8080"
       export EXPOSE_PORTS_8010="8010"
+      echo "  - listen [control-api] on: http://localhost:8010"
     fi
     if [ "${IS_DEV_DATA_API}" != "true" ]; then
       EXPOSE_PORTS="${EXPOSE_PORTS} 8020:data-api:8080"
       export EXPOSE_PORTS_8020="8020"
+      echo "  - listen [data-api] on: http://localhost:8020"
     fi
+
+    echo ""
 
     export EXPOSE_PORTS="${EXPOSE_PORTS}"
 

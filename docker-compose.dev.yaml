@@ -49,7 +49,7 @@ services:
     build:
       context: ./dev/python
       args:
-        - image=ghcr.io/datalens-tech/datalens-control-api:0.2352.0
+        - image=ghcr.io/datalens-tech/datalens-control-api:0.2396.0
     tty: true
     environment:
       RUN_DEV: /etc/service/dl_api/run
@@ -74,7 +74,7 @@ services:
     build:
       context: ./dev/python
       args:
-        - image=ghcr.io/datalens-tech/datalens-data-api:0.2352.0
+        - image=ghcr.io/datalens-tech/datalens-data-api:0.2396.0
     tty: true
     environment:
       RUN_DEV: /etc/service/dl_api/run
@@ -99,8 +99,9 @@ services:
     build:
       context: ./dev/nodejs
       args:
-        - image=ghcr.io/datalens-tech/datalens-us:0.396.0
+        - image=ghcr.io/datalens-tech/datalens-us:0.413.0
     tty: true
+    user: ${USER_DEV:-app}
     environment:
       RUN_DEV: npx tsc-watch --onSuccess ./scripts/preflight.sh
     volumes:
@@ -123,8 +124,9 @@ services:
     build:
       context: ./dev/nodejs
       args:
-        - image=ghcr.io/datalens-tech/datalens-ui:0.3271.0
+        - image=ghcr.io/datalens-tech/datalens-ui:0.3498.0
     tty: true
+    user: ${USER_DEV:-app}
     ulimits:
       core: 0
     environment:
@@ -152,8 +154,9 @@ services:
     build:
       context: ./dev/nodejs
       args:
-        - image=ghcr.io/datalens-tech/datalens-meta-manager:0.47.0
+        - image=ghcr.io/datalens-tech/datalens-meta-manager:0.50.0
     tty: true
+    user: ${USER_DEV:-app}
     environment:
       RUN_DEV: npx tsc-watch --onSuccess ./scripts/preflight.sh
     volumes:
@@ -184,6 +187,7 @@ services:
       args:
         - image=ghcr.io/datalens-tech/datalens-auth:0.24.0
     tty: true
+    user: ${USER_DEV:-app}
     environment:
       RUN_DEV: npx tsc-watch --onSuccess ./scripts/preflight.sh
     volumes:
@@ -209,8 +213,9 @@ services:
     build:
       context: ./dev/nodejs
       args:
-        - image=ghcr.io/datalens-tech/datalens-ui:0.3271.0
+        - image=ghcr.io/datalens-tech/datalens-ui:0.3498.0
     tty: true
+    user: ${USER_DEV:-app}
     ulimits:
       core: 0
     environment:
