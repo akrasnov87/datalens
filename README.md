@@ -37,7 +37,7 @@ APP_ENV=prod
 HC_ENDPOINT=localhost:8080/highcharts
 HC_PROTOCOL=http
 POSTGRES_USER=pg-user
-RELEASE_VERSION=2.7.0-night
+RELEASE_VERSION=2.7.1-night
 IGNORE_SCHEMA="'public','pg_catalog','information_schema'"
 </pre>
 

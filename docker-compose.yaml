@@ -232,7 +232,7 @@ services:
   #
   ui:
     container_name: datalens-ui-${APP_ENV}
-    image: akrasnov87/datalens-ui:0.3498.0
+    image: akrasnov87/datalens-ui:0.3498.1
     environment:
       APP_MODE: full
       APP_ENV: production
@@ -261,8 +261,8 @@ services:
       AUTH_SIGNUP_DISABLED: ${AUTH_SIGNUP_DISABLED:-false}
 
       FLAT_TABLE_ROWS_LIMIT: 100000
-      DATA_FETCHING_TIMEOUT_MS: 120
-      DATA_SINGLE_FETCHING_TIMEOUT_MS: 120
+      DATA_FETCHING_TIMEOUT_MS: 120000
+      DATA_SINGLE_FETCHING_TIMEOUT_MS: 120000
       UNITED_STORAGE_CONFIG_LOADED_TIMEOUT: 10000
       EXPORT_DASH_EXCEL: ${EXPORT_DASH_EXCEL:-false}
       OIDC: ${OIDC:-false}
