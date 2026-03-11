@@ -3,6 +3,7 @@
 ### Image versions
 
 * datalens-ui:0.3498.1
+* datalans-auth:2.7.0
 
 #### datalens-ui
 
