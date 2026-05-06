@@ -76,7 +76,7 @@ services:
   #
   control-api:
     container_name: datalens-control-api-${APP_ENV}
-    image: akrasnov87/datalens-control-api:0.2396.0
+    image: akrasnov87/datalens-control-api:0.2457.0
     environment:
       BI_API_UWSGI_WORKERS_COUNT: 4
       RQE_FORCE_OFF: 1
@@ -100,7 +100,7 @@ services:
   #
   data-api:
     container_name: datalens-data-api-${APP_ENV}
-    image: akrasnov87/datalens-data-api:0.2396.0
+    image: akrasnov87/datalens-data-api:0.2457.0
     environment:
       GUNICORN_WORKERS_COUNT: 5
       RQE_FORCE_OFF: 1
@@ -131,7 +131,7 @@ services:
   
   us:
     container_name: datalens-us-${APP_ENV}
-    image: akrasnov87/datalens-us:0.413.0
+    image: akrasnov87/datalens-us:1.39.0
     environment:
       APP_INSTALLATION: opensource
       APP_ENV: prod
@@ -143,6 +143,7 @@ services:
       AUTH_MASTER_TOKEN: ${AUTH_MASTER_TOKEN:-auth-master-token}
       #
       POSTGRES_DSN_LIST: "postgres://${POSTGRES_USER:-pg-user}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB_US:-pg-us-db}${POSTGRES_ARGS:-}"
+      #POSTGRES_DSN_LIST: ${CONNECT_STR:-}
       US_SURPRESS_DB_STATUS_LOGS: 'true'
       #
       SKIP_INSTALL_DB_EXTENSIONS: 1
@@ -167,7 +168,7 @@ services:
   #
   ui-api:
     container_name: datalens-ui-api-${APP_ENV}
-    image: akrasnov87/datalens-ui:0.3498.0
+    image: akrasnov87/datalens-ui:0.3831.0
     environment:
       APP_MODE: api
       APP_ENV: production
@@ -182,7 +183,7 @@ services:
   #
   meta-manager:
     container_name: datalens-meta-manager-${APP_ENV}
-    image: akrasnov87/datalens-meta-manager:0.50.0
+    image: akrasnov87/datalens-meta-manager:0.52.0
     environment:
       APP_INSTALLATION: opensource
       APP_ENV: prod
@@ -221,6 +222,7 @@ services:
       NODE_VPATH: /demo/
       #
       CONNECT_STR: "postgres://${POSTGRES_USER:-pg-user}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB_US:-pg-us-db}${POSTGRES_ARGS:-}"
+      #CONNECT_STR: ${CONNECT_STR:-}
       PROJECT_ID: ${PROJECT_ID:-datalens-demo}
       BUDIBASE_URI: ${BUDIBASE_URI:-}
       IGNORE_SCHEMA: ${IGNORE_SCHEMA:-}
@@ -232,7 +234,7 @@ services:
   #
   ui:
     container_name: datalens-ui-${APP_ENV}
-    image: akrasnov87/datalens-ui:0.3498.1
+    image: akrasnov87/datalens-ui:0.3831.0
     environment:
       APP_MODE: full
       APP_ENV: production
@@ -247,7 +249,7 @@ services:
       #
       US_MASTER_TOKEN: ${US_MASTER_TOKEN:-us-master-token}
       #
-      RELEASE_VERSION: ${RELEASE_VERSION:-2.7.0-night}
+      RELEASE_VERSION: ${RELEASE_VERSION:-2.9.0-night}
       #
       HC: ${HC:-0}
       #

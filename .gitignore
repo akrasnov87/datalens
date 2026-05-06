@@ -31,3 +31,4 @@ dist/
 pg-demo-connection
 metadata
 table-report-headers
+*.iserv.yaml
