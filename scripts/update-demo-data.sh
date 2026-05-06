@@ -77,6 +77,7 @@ docker --log-level error compose -f "${COMPOSE_FILE}" exec \
   sed -E 's|"db_name": "[^"]+"|"db_name": "{{POSTGRES_DB}}"|' |
   sed -E 's|"username": "[^"]+"|"username": "{{POSTGRES_USER}}"|' |
   sed -E "s| 'OpenSource Demo', | '{{DEMO_DATA_NAME}}', |" \
+  sed -E "s| 'datalens-demo', | '{{DEMO_PROJECT_ID}}', |" \
     >>"${DUMP_FILE}"
 
 EXIT="$?"

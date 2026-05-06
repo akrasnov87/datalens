@@ -206,6 +206,8 @@ services:
       #
       NODE_RPC_URL: ${NODE_RPC_URL:-http://us-auth/demo/rpc}
     depends_on:
+      us:
+        condition: service_started
       temporal:
         condition: service_healthy
       ui-api:

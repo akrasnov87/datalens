@@ -32,7 +32,7 @@ if [ ! -z "${US_ENDPOINT}" ]; then
   echo "  [demo] sleep ${DEMO_DATA_SLEEP} seconds..."
   sleep "${DEMO_DATA_SLEEP}"
 
-  RETRIES="30"
+  RETRIES="60"
   echo "  [demo] retries: ${RETRIES}"
 
   for RETRY in $(seq 1 $RETRIES); do
@@ -74,6 +74,7 @@ if [ "${HC}" == "1" ]; then
   # shellcheck disable=SC2002
   cat /init/demo-data/us-hc-data.sql |
     sed "s|{{DEMO_DATA_NAME}}|${DEMO_DATA_NAME}|" |
+    sed "s|{{DEMO_PROJECT_ID}}|${DEMO_PROJECT_ID}|" |
     sed "s|{{POSTGRES_HOST}}|${POSTGRES_HOST}|" |
     sed "s|{{POSTGRES_PORT}}|${POSTGRES_PORT}|" |
     sed "s|{{POSTGRES_DB}}|${POSTGRES_DB_DEMO}|" |
@@ -85,6 +86,7 @@ else
   # shellcheck disable=SC2002
   cat /init/demo-data/us-d3-data.sql |
     sed "s|{{DEMO_DATA_NAME}}|${DEMO_DATA_NAME}|" |
+    sed "s|{{DEMO_PROJECT_ID}}|${DEMO_PROJECT_ID}|" |
     sed "s|{{POSTGRES_HOST}}|${POSTGRES_HOST}|" |
     sed "s|{{POSTGRES_PORT}}|${POSTGRES_PORT}|" |
     sed "s|{{POSTGRES_DB}}|${POSTGRES_DB_DEMO}|" |
