@@ -54,6 +54,17 @@ services:
         max-file: "3"  # количество файлов
         max-size: "5m" # размер файла лога
 
+  ui:
+    extends:
+      file: docker-compose.yaml
+      service: ui
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - 8080:8080
+    networks:
+      - default
+
 volumes:
   db-postgres:
     name: datalens-volume-${APP_ENV}

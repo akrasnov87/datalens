@@ -76,7 +76,7 @@ services:
   #
   control-api:
     container_name: datalens-control-api-${APP_ENV}
-    image: akrasnov87/datalens-control-api:0.2457.0
+    image: akrasnov87/datalens-control-api:0.2695.0
     environment:
       BI_API_UWSGI_WORKERS_COUNT: 4
       RQE_FORCE_OFF: 1
@@ -100,7 +100,7 @@ services:
   #
   data-api:
     container_name: datalens-data-api-${APP_ENV}
-    image: akrasnov87/datalens-data-api:0.2457.0
+    image: akrasnov87/datalens-data-api:0.2695.0
     environment:
       GUNICORN_WORKERS_COUNT: 5
       RQE_FORCE_OFF: 1
@@ -131,7 +131,7 @@ services:
   
   us:
     container_name: datalens-us-${APP_ENV}
-    image: akrasnov87/datalens-us:1.39.0
+    image: akrasnov87/datalens-us:1.143.0
     environment:
       APP_INSTALLATION: opensource
       APP_ENV: prod
@@ -168,7 +168,7 @@ services:
   #
   ui-api:
     container_name: datalens-ui-api-${APP_ENV}
-    image: akrasnov87/datalens-ui:0.3831.0
+    image: akrasnov87/datalens-ui:1.65.0
     environment:
       APP_MODE: api
       APP_ENV: production
@@ -183,7 +183,7 @@ services:
   #
   meta-manager:
     container_name: datalens-meta-manager-${APP_ENV}
-    image: akrasnov87/datalens-meta-manager:0.52.0
+    image: akrasnov87/datalens-meta-manager:0.56.0
     environment:
       APP_INSTALLATION: opensource
       APP_ENV: prod
@@ -236,7 +236,7 @@ services:
   #
   ui:
     container_name: datalens-ui-${APP_ENV}
-    image: akrasnov87/datalens-ui:0.3831.0
+    image: akrasnov87/datalens-ui:1.65.0
     environment:
       APP_MODE: full
       APP_ENV: production
@@ -278,8 +278,8 @@ services:
 
       HC_ENDPOINT: ${HC_ENDPOINT:-}
       HC_PROTOCOL: ${HC_PROTOCOL:-https}
-    depends_on:
-      - us
+    #depends_on:
+    #  - us
     ports:
      - ${UI_PORT:-8080}:8080
     networks:
