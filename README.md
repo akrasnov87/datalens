@@ -14,7 +14,7 @@
 
 ## Версионность
 
-Версия `datalens v2.7.0` соответствует нашей версии `v2.7.0-night` (см. файл [CHANGELOG](CHANGELOG.md)).
+Версия `datalens v2.9.0` соответствует нашей версии `v2.9.0-night` (см. файл [CHANGELOG](CHANGELOG.md)).
 
 ## Запуск Datalens с авторизацией
 
@@ -37,7 +37,7 @@ APP_ENV=prod
 HC_ENDPOINT=localhost:8080/highcharts
 HC_PROTOCOL=http
 POSTGRES_USER=pg-user
-RELEASE_VERSION=2.7.1-night
+RELEASE_VERSION=2.9.0-night
 IGNORE_SCHEMA="'public','pg_catalog','information_schema'"
 </pre>
 
