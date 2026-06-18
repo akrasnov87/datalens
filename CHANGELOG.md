@@ -1,3 +1,14 @@
+## v2.9.0-night (2026-06-18)
+
+### Image versions
+
+* datalens-ui:1.65.0
+* datalens-us:1.143.0
+* datalans-auth:0.2.9
+* datalans-meta-manager:0.56.0
+* datalans-backend:0.2695.0
+* datalens-postgres:16.0.1
+
 ## v2.7.1-night (2025-03-04)
 
 ### Image versions
@@ -224,7 +235,6 @@ docker compose exec -T postgres psql --username pg-user --dbname pg-us-db -c "UP
 ### Deploy
 - **Backend**: Add linux/arm64 images for all services [datalens-tech/datalens-backend#893](https://github.com/datalens-tech/datalens-backend/pull/893)
 - Add Helm chart support for Kubernetes deployment with customizable configuration options (see `helm/` directory)
-- Add Terraform example for infrastructure deployment on cloud providers with complete application setup (see `terraform/` directory)
 - Add help argument for `init.sh` script with all available options (run `./init.sh --help` for details)
 
 ### New features

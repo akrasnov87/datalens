@@ -1,7 +1,7 @@
 registry:
   url: 'ghcr.io/datalens-tech'
 #
-release_version: '2.7.0'
+release_version: '2.9.0'
 #
 ingress:
   ip: null
@@ -18,6 +18,7 @@ ingress:
 infra:
   postgres:
     enabled: true
+    use_data_subdirectory: false
     resources:
       requests:
         cpu: 0.25
@@ -46,7 +47,7 @@ infra:
 application:
   control_api:
     replicas: 1
-    version: '0.2396.0'
+    version: '0.2457.0'
     resources:
       requests:
         cpu: 0.5
@@ -56,7 +57,7 @@ application:
         memory: 1024Mi
   data_api:
     replicas: 1
-    version: '0.2396.0'
+    version: '0.2457.0'
     resources:
       requests:
         cpu: 1
@@ -66,7 +67,7 @@ application:
         memory: 1024Mi
   ui:
     replicas: 1
-    version: '0.3498.0'
+    version: '0.3831.0'
     resources:
       requests:
         cpu: 0.25
@@ -76,7 +77,7 @@ application:
         memory: 512Mi
   ui_api:
     replicas: 1
-    version: '0.3498.0'
+    version: '0.3831.0'
     resources:
       requests:
         cpu: 0.25
@@ -86,7 +87,7 @@ application:
         memory: 512Mi
   us:
     replicas: 1
-    version: '0.413.0'
+    version: '1.39.0'
     resources:
       requests:
         cpu: 0.5
@@ -96,7 +97,7 @@ application:
         memory: 512Mi
   auth:
     replicas: 1
-    version: '0.24.0'
+    version: '0.27.0'
     resources:
       requests:
         cpu: 0.5
@@ -106,7 +107,7 @@ application:
         memory: 512Mi
   meta_manager:
     replicas: 1
-    version: '0.50.0'
+    version: '0.52.0'
     resources:
       requests:
         cpu: 0.5
@@ -144,6 +145,7 @@ postgres:
 features:
   auth:
     enabled: true
+    signup: true
     disable_wildcard_cookie: true
   demo:
     enabled: true

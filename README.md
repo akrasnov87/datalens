@@ -290,13 +290,21 @@ AUTH_TOKEN_PRIVATE_KEY=$(openssl genpkey -algorithm RSA -pkeyopt "rsa_keygen_bit
 AUTH_TOKEN_PUBLIC_KEY=$(echo "${AUTH_TOKEN_PRIVATE_KEY}" | openssl rsa -pubout 2>/dev/null)
 TEMPORAL_AUTH_PRIVATE_KEY=$(openssl genpkey -algorithm RSA -pkeyopt "rsa_keygen_bits:4096" 2>/dev/null)
 TEMPORAL_AUTH_PUBLIC_KEY=$(echo "${TEMPORAL_AUTH_PRIVATE_KEY}" | openssl rsa -pubout 2>/dev/null)
+BI_DYNAMIC_US_AUTH_PRIVATE_KEY=$(openssl genpkey -algorithm RSA -pkeyopt "rsa_keygen_bits:4096" 2>/dev/null)
+BI_DYNAMIC_US_AUTH_PUBLIC_KEY=$(echo "${BI_DYNAMIC_US_AUTH_PRIVATE_KEY}" | openssl rsa -pubout 2>/dev/null)
+UI_DYNAMIC_US_AUTH_PRIVATE_KEY=$(openssl genpkey -algorithm RSA -pkeyopt "rsa_keygen_bits:4096" 2>/dev/null)
+UI_DYNAMIC_US_AUTH_PUBLIC_KEY=$(echo "${UI_DYNAMIC_US_AUTH_PRIVATE_KEY}" | openssl rsa -pubout 2>/dev/null)
 
 helm upgrade --install datalens oci://ghcr.io/datalens-tech/helm/datalens \
 --namespace datalens --create-namespace \
 --set "secrets.AUTH_TOKEN_PRIVATE_KEY=${AUTH_TOKEN_PRIVATE_KEY}" \
 --set "secrets.AUTH_TOKEN_PUBLIC_KEY=${AUTH_TOKEN_PUBLIC_KEY}" \
 --set "secrets.TEMPORAL_AUTH_PRIVATE_KEY=${TEMPORAL_AUTH_PRIVATE_KEY}" \
---set "secrets.TEMPORAL_AUTH_PUBLIC_KEY=${TEMPORAL_AUTH_PUBLIC_KEY}"
+--set "secrets.TEMPORAL_AUTH_PUBLIC_KEY=${TEMPORAL_AUTH_PUBLIC_KEY}" \
+--set "secrets.BI_DYNAMIC_US_AUTH_PRIVATE_KEY=${BI_DYNAMIC_US_AUTH_PRIVATE_KEY}" \
+--set "secrets.BI_DYNAMIC_US_AUTH_PUBLIC_KEY=${BI_DYNAMIC_US_AUTH_PUBLIC_KEY}" \
+--set "secrets.UI_DYNAMIC_US_AUTH_PRIVATE_KEY=${UI_DYNAMIC_US_AUTH_PRIVATE_KEY}" \
+--set "secrets.UI_DYNAMIC_US_AUTH_PUBLIC_KEY=${UI_DYNAMIC_US_AUTH_PUBLIC_KEY}"
 ```
 
 **Note:** Helm template engine does not provide built-in functions for creating private and public RSA keys.
@@ -321,7 +329,9 @@ DataLens consists of three main parts:
 
 ## What's already available
 
-We are releasing DataLens with a minimal set of available connectors (ClickHouse, ClickHouse over YTsaurus, and PostgreSQL) as well as other core functionality such as data processing engine, user interface, and minimal auth layer. We are planning to add missing features based on our understanding of community priorities and your feedback.
+DataLens already supports a growing number of data sources, including ClickHouse, PostgreSQL, MySQL, YDB, YTsaurus CHYT, Greenplum, SQL Server, Oracle Database, StarRocks, Prometheus, Snowflake, and Trino.
+
+The project also provides the core functionality required for analytics workloads, including the data processing engine, user interface, and a minimal authentication layer. We plan to further extend DataLens capabilities based on community priorities and feedback.
 
 ## Cloud Providers
 Below is a list of cloud providers offering DataLens as a service:
@@ -371,8 +381,6 @@ If you use IP address as endpoint, you can generate docker compose file with thi
 `./init.sh --ip <ip>`
 
 #### How can I specify external PostgreSQL database?
-
-You can check a production deployment example with high availability in a Kubernetes cluster using Tofu (Terraform) in the `terraform/` directory.
 
 If you want to use external PostgreSQL database with Docker, you can specify its connection string in environment variables:
 
